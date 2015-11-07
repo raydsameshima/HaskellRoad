@@ -1,8 +1,8 @@
+-- prime.hs
 -- chapter 01 
 
 module GS where
 
---prime.hs
 -- rem = remainder つまり余りがあるかないかで真偽返す
 -- rem :: Integral a => a -> a -> a
 divides :: Integer -> Integer -> Bool
