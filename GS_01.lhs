@@ -159,10 +159,43 @@ A function that calculates the average of a list of numbers.
 > average [] = error "empty list[]!"
 > average [n] = n
 > average lst = sumOfList / lengthOfList
->   where sumOfList = toRational . sum $ lst
->         lengthOfList = toRational . length $ lst 
+>   where sumOfList = toRational . sum' $ lst
+>         lengthOfList = toRational . length' $ lst 
 
   *GS_01> :info average 
   average :: [Rational] -> Rational   -- Defined at GS_01.lhs:159:3
 
-page 16
+> sum' :: Num a => [a] -> a
+> sum' [] = 0
+> sum' (x:xs) = x + sum' xs
+> length' :: Num a => [t] -> a
+> length' [] = 0
+> length' (x:xs) = 1 + length' xs
+
+type synonym
+  *GS_01> :info String
+  type String = [Char]  -- Defined in ‘GHC.Base’
+
+Exercise 1.13
+
+> count :: Char -> String -> Int
+> count _ [] = 0
+> count s (t:ts) 
+>   | s == t = 1+ count s ts
+>   | otherwise = count s ts
+
+Exercise 1.14
+A function that converts a string to another:
+  "bang!" -> "baannngggg!!!!!"
+
+> helper :: (Int, Char) -> [Char]
+> helper (n, c)
+>   | n < 1     = [] 
+>   | otherwise = c : (helper (n-1, c))
+
+> blowup = concat . map helper . zip [1..]
+
+Exiercise 1.15
+A sort function in alphabetical order.
+
+sortString :: [String] -> [String]
