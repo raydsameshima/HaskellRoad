@@ -195,7 +195,141 @@ A function that converts a string to another:
 
 > blowup = concat . map helper . zip [1..]
 
-Exiercise 1.15
+Exercise 1.15
 A sort function in alphabetical order.
 
-sortString :: [String] -> [String]
+> -- sortString :: [String] -> [String]
+> sortString [] = []
+> sortString (x:xs) = left ++ right
+>   where left = sortString [y| y<- xs, y<x] 
+>         right= x:( sortString [y| y<- xs, y>=x])
+
+This is actually the quicksort!
+
+Exercise 1.16
+Another isPrefix function.
+
+> prefix :: String -> String -> Bool
+> prefix [] _ = True
+> prefix _ [] = False
+> prefix (x:xs) (y:ys) = (x==y) && prefix xs ys
+
+Exercise 1.17
+Another isSubString function.
+
+> substring :: String -> String -> Bool
+> substring [] _ = True
+> substring _ [] = False
+> substring xs all@(y:ys) = prefix xs all || substring xs ys
+
+1.6 Haskell Types
+Exercise 1.18
+... easy
+
+Exercise 1.19
+  *GS_01> :type head
+  head :: [a] -> a
+  *GS_01> :type last
+  last :: [a] -> a
+  *GS_01> :type init
+  init :: [a] -> [a]
+  *GS_01> :type fst
+  fst :: (a, b) -> a
+  *GS_01> :type (++)
+  (++) :: [a] -> [a] -> [a]
+  *GS_01> :type flip
+  flip :: (a -> b -> c) -> b -> a -> c
+  *GS_01> :type flip (++)
+  flip (++) :: [a] -> [a] -> [a]
+
+1.7 The Prime Factorization Algorithm
+Let n>1 be a natural number.
+The pseudo code of prime factorization is
+  WHILE n =/ 1 DO BEGIN p:=ld(n); n:= n/p END
+As we have seen, ld(n) exists and is prime.
+This algorithm will terminate, since through the loop will decrease n.
+
+> factors :: Integer -> [Integer]
+> factors n
+>   | n < 1     = error "argument not positive"
+>   | n == 1    = []
+>   | otherwise = p: factors (n `div` p)
+>       where p = ld n
+
+1.8 The map and filter Functions
+An introduction to higher order functions, or functionals.
+
+> map' :: (a -> b) -> [a] -> [b]
+> map' f []     = []
+> map' f (x:xs) = (f x) : map' f xs   
+
+Exercise 1.20
+Write length function using map.
+
+> length'' :: [a] -> Int
+> length'' = sum . map' (\_ -> 1) 
+
+Exercise 1.21
+Use map to write a function sumLengths that takes a list of lists and return the sum of thier lengths.
+
+> sumLengths :: [[a]] -> Int
+> sumLengths = sum . map length''
+
+> filter' :: (a -> Bool) -> [a] -> [a]
+> filter' p [] = []
+> filter' p (a:as) 
+>   | p a       = a : filter' p as
+>   | otherwise = filter' p as
+
+Example 1.22
+This is an infinite list of primes that filters from [2..].
+
+> primes0 :: [Integer]
+> primes0 = filter prime0 [2..]
+
+  *GS_01> take 10 primes0
+  [2,3,5,7,11,13,17,19,23,29]
+
+Example 1.23
+An improvement of ld.
+The helper function ldf checks k|n for all k with
+  2 <= k <= sqrt(n)
+by +1 step.
+In fact, it is enogh to check p|n for the primes p with
+  2 <= p <= sqrt(n).
+
+> ldp :: Integer -> Integer
+> ldp n = ldpf primes1 n
+> ldpf :: [Integer] -> Integer -> Integer
+> ldpf (p:ps) n
+>   | n `rem` p == 0 = p
+>   | p^2 > n        = n
+>   | otherwise      = ldpf ps n
+
+The prime list (p:ps) is an example of lazy list, because we compute only the part of the list that we need for further processing.
+To define primes1 we need a test for primality, but that test is itself defined in terms of the function ld, which in turn refers to primes1.
+We seem to be running around in a "circle".
+
+> primes1 :: [Integer]
+> primes1 = 2 : filter prime [3,5..]
+
+> prime :: Integer -> Bool
+> prime n
+>   | n < 1     = error "not a positive integer"
+>   | n == 1    = False
+>   | otherwise = (ldp n == n)
+  
+  *GS_01> :set +s
+  *GS_01> take 10000 primes0
+  (13.45 secs, 2,751,947,128 bytes)
+  *GS_01> take 10000 primes1
+  (3.36 secs, 617,355,280 bytes)
+
+About 4 times faster.
+
+Exercise 1.24
+The point-free style.
+
+1.9 Haskell Equations and Equational Reasoning
+1.10 Further Reading
+
