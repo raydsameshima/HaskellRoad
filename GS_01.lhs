@@ -64,9 +64,13 @@ m divides n <=> the remainder of the process of dividing n by m equals 0:
 > divides d n = (rem n d == 0)
 
 It is convenient to define ld function in terms of a helper ldf, for the least divisor starting from a given threshold k <= n.
+
+{-
 Thus
-  ld(k)(n)
+  ldf(k)(n)
 is the least divisor of n and ld(k)(n) >= k.
+-}
+"Thus, ldf(k)(n) is the least divisor of n, provided n has no divisors <k."
 
 > ld :: Integer -> Integer
 > ld n = ldf 2 n
