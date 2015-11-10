@@ -254,3 +254,28 @@ Theorem 2 12
   *TAMO_02> (\p -> p || False) `logEquiv1` id
   True
 
+Substitution Principle:
+Just a dummy.
+
+Example 2.14
+p := not p
+
+Exercise 2.15
+A propositional contradiction is a formula that yields false for every combination of truth values for its proposition letters.
+
+> isContradiction1 :: (Bool -> Bool) -> Bool
+> isContradiction1 bf = not $ and [bf x | x <- [True,False]] 
+  
+  *TAMO_02> isContradiction1 (\p -> False)
+  True
+
+Exercise 2.16
+Produce useful denial for every sentence of Exercise 2.31, i.e. for every formula \Phi, the denial of it is (not \Phi).
+
+Exercise 2.17
+  x < y < z \equiv x<y && y<z
+Therefore its denial is
+  x=>x || y=>z
+
+Exercise 2.18
+
