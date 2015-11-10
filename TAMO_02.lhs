@@ -235,5 +235,22 @@ Don't confuse \equive and <=>.
 If \Phi and \Psi are formulas, then \Phi \equiv \Psi expresses the statement that both statements are equivalent.
 On the other hand, \Phi <=> \Psi is just another formula.
 
-Theorem 2.10
+Theorem 2.10, 2.11
+
+> test1 = (\p -> p) `logEquiv1` \p -> not (not p)
+> test2a = (\p -> p && p) `logEquiv1` id
+> test2b = (\p -> p || p) `logEquiv1` id
+> test3 = (\p q -> p ==> q) `logEquiv2` (\p q -> ((not p) || q))
+> test4 = (\p q -> (not p) ==> (not q)) `logEquiv2` (\p q -> q ==> p)
+> test5 = (\p q -> p <=> q) `logEquiv2` (\p q -> (p ==> q) && (q ==> p))
+> test6 = (\p q -> p && q) `logEquiv2` (\p q -> q && p)
+> test7 = (\p q -> not (p && q)) `logEquiv2` (\p q -> (not p) || (not q))
+> test8 = (\p q r -> p && (q && r)) `logEquiv3` (\p q r -> (p && q) && r)
+> test9 = (\p q r -> p && (q || r)) `logEquiv3` (\p q r -> (p && q) || (p && r))
+
+Theorem 2 12
+  *TAMO_02> (\p -> p ==> False) `logEquiv1` (\p -> (not p))
+  True
+  *TAMO_02> (\p -> p || False) `logEquiv1` id
+  True
 
