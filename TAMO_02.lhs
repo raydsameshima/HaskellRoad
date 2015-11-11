@@ -286,6 +286,7 @@ Exercise 2.18
 Show:
   (\Psi <=> \Phi) \equiv (not \Phi <=> not \Psi) 
 
-Exercise 2.19
+Think about the truth table of the formula (\Psi <=> \Phi).
 
+Exercise 2.19
 
