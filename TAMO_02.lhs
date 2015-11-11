@@ -231,9 +231,14 @@ Let's redo Exercise 2.9:
   True
 
 Warning
-Don't confuse \equive and <=>.
-If \Phi and \Psi are formulas, then \Phi \equiv \Psi expresses the statement that both statements are equivalent.
-On the other hand, \Phi <=> \Psi is just another formula.
+Don't confuse \equiv and <=>(iff).
+If \Phi and \Psi are formulas, then 
+  \Phi \equiv \Psi 
+expresses the statement that both statements are equivalent.
+On the other hand, 
+  \Phi <=> \Psi 
+is just another formula.
+See Exercise 2.18.
 
 Theorem 2.10, 2.11
 
@@ -278,4 +283,9 @@ Therefore its denial is
   x=>x || y=>z
 
 Exercise 2.18
+Show:
+  (\Psi <=> \Phi) \equiv (not \Phi <=> not \Psi) 
+
+Exercise 2.19
+
 
