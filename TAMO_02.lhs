@@ -365,5 +365,70 @@ Bound Variables.
 Quantifier expressions like
   \forall x, \exists y \in R, etc
 are said to bind every occurance of x,y,etc in their scope.
-If a variable occurs bound in a certain expression then the meaning of that expression does not change when all bound occurences of that variable are replaced by another one. (alpha equivalence of lambda calculus)
+If a variable occurs bound in a certain expression then the meaning of that expression does not change when all bound occurences of that variable are replaced by another one. (alpha equivalence of lambda calculus, or "dummy")
+
+Example 2.28 (dummy)
+
+Example 2.29 (Summation, Integration)
+  *TAMO_02> sum [i | i<- [1..5]]
+  15
+  *TAMO_02> sum [j | j<- [1..5]]
+  15
+
+Example 2.30 (Abstraction)
+  [x|x<- lst, p x] = [y|y<- lst, p y]
+
+Translation Problems.
+Exercise 2.31, 2.32, 2.33
+
+Expressing Uniqueness.
+\exists! x :<=> \exists x (p x && \forall z, (p z ==> z = x)).
+
+Exercise 2.34, 2.35, 2.36
+
+Eemark.
+Expanding the definitions of mathematical concepts is not always a good idea.
+E.g.
+  "n is prime" :<=> n>1 && \exists d s.t. (1<d<n && d|n),
+where (m|n) for "m divides n".
+
+Before we'll start looking at the language of mathematics and its conventions in a more systematic way, we'll make the link between mathematical definitions and implementations of those definitions.
+
+2.4 Lambda Abstraction
+
+> square1, square2 :: Integer -> Integer
+> square1 x = x^2
+> square2   = \x -> x^2
+
+> m1, m2 :: Integer -> Integer -> Integer
+> m1 = \x -> \y -> x*y
+> m2 = \x y -> x*y
+
+The solution formula of quadratic equations:
+  a*x^2 + b*x + c = 0, a \= 0.
+
+> solveQdr :: (Float, Float, Float) -> (Float, Float)
+> solveQdr = \(a,b,c) ->
+>   if a == 0 then error "not quadratic, give me non zero a!"
+>             else let d = b^2 - 4*a*c 
+>                  in  if d<0 then error "no real solutions"
+>                             else ((-b-sqrt d)/(2*a), (-b+sqrt d)/(2*a))
+
+2.5 Definitions and Implementations
+A natural number n is prime if n>1 and no number m with 1<m<n divides n:
+  n>1 && not \exists m (1<m<n && m|n).
+Another way of expressing this is the following:
+  n>1 && \forall m ((1<m<n) ==> not m|n).
+
+Let's define a formula:
+  isPrime n :\equiv n>1 && \forall m ((1<m<n) ==> not m|n)..
+One way to think about this definition is as a procedure for testing wheter a natural number is prime.
+The implementation of ld(n) function in chapter 1 is
+  isPrime n :\equiv n>1 && \forall m ((1<m && m^2 <= n) ==> not m|n)
+            :\equiv n>1 && ld(n) = n.
+
+2.6 Abstract Formulas and Concrete Structures
+Open Formulas, Free Variables, and Satisfaction.
+An occurence of a variable in an expression that is not (any more) in the scope of a quantifier is said to be free in that expression.
+Formulas that contain free variables are called open.
 
