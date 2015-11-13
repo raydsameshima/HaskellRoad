@@ -181,6 +181,11 @@ In Haskell, the convention is not quite the same.
 Therefore, we should use parenthesis.
 
 Logically Equivalent
+Two formulas are called (logically) equivalent if, no matter the truth values of the letters P,Q, ... occuring in these formulas, the truth values obtained for them are the same.
+This can be checked by constructing a truth table.
+
+The same concepts of the equallity of functions:
+  f,g :: a -> b, f=g :<=> forall x <- a, f(a) = g(a).
 
 Example 2.6 (The First Law of De Morgan)
   not (p && q) \equiv (not p || not q)
@@ -286,7 +291,79 @@ Exercise 2.18
 Show:
   (\Psi <=> \Phi) \equiv (not \Phi <=> not \Psi) 
 
+Proof
 Think about the truth table of the formula (\Psi <=> \Phi).
+Taking not flip True and False, but does not change (not \Phi <=> not \Psi).
+
+Q.E.D.
 
 Exercise 2.19
+Show that
+  \Psi \equiv \Phi
+is true iff \Psi <=> \Phi is logically valid.
+
+Proof
+==> part:
+\Psi \equiv \Phi means that for arbitrary input, they will return the same Boolean values, and then \Psi <=> \Phi is always True.
+
+<== part:
+If \Psi <=> \Phi = True, they are the same Boolean function, i.e. \Psi \equiv \Phi.
+
+Q.E.D.
+
+Exercise 2.20
+1.
+  *TAMO_02> let f = \p q -> (not p ==> q)
+  *TAMO_02> let g = \p q -> (p ==> not q)
+  *TAMO_02> f `logEquiv2` g
+  False
+
+2.
+  *TAMO_02> let f = \p q -> (not p ==> q)
+  *TAMO_02> let g = \p q -> (q ==> not p)
+  *TAMO_02> f `logEquiv2` g
+  False
+
+4.
+  *TAMO_02> let i = \p q r -> p ==> (q ==> r)
+  *TAMO_02> let j = \p q r -> q ==> (p ==> r)
+  *TAMO_02> i `logEquiv3` j
+  True
+
+6.
+  *TAMO_02> let f = \p q -> (p ==> q) ==> p
+  *TAMO_02> let g = \p q -> p
+  *TAMO_02> f `logEquiv2` g
+  True
+
+7,
+  *TAMO_02> let f = \p q r -> (p || q) ==> r
+  *TAMO_02> let g = \p q r -> (p ==> r) && (q ==> r)
+  *TAMO_02> f `logEquiv3` g
+  True
+
+Exercise 2.21
+
+2.3 Making Symbolic Form Explicit
+
+Exercise 2.22
+\forall r<s \in Q, \exists t \in Q s.t.
+  r < t < s,
+since just take
+  t := (r + s)/2.
+
+Quantifiers
+\forall, \exists
+
+Exercise 2.23 (structure trees)
+
+Example 2.24, 2.25 (restrictions)
+
+Exercise 2.26, 2,27
+
+Bound Variables.
+Quantifier expressions like
+  \forall x, \exists y \in R, etc
+are said to bind every occurance of x,y,etc in their scope.
+If a variable occurs bound in a certain expression then the meaning of that expression does not change when all bound occurences of that variable are replaced by another one. (alpha equivalence of lambda calculus)
 
