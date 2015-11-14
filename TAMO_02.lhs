@@ -34,7 +34,7 @@ The difference is that the phrase (if, then) is used to construct conditional st
 We will never write (=>) when we want to conclude from one mathematical statement to the next.
 The rules of inference, the notion of mathematical proof, and the proper use of the word (thus) are the subject of Chapter 3.
 
-Iff = if, and only if
+iff = if, and only if
 
 Negation
 not :: Bool -> Bool
@@ -69,7 +69,7 @@ P ==> Q := if P(antecedent), then Q(consequent).
 > (==>) :: Bool -> Bool -> Bool
 > x ==> y = (not x) || y
 
-or explicitly
+Or explicitly
   True  ==> x = x
   False ==> x = True
 
@@ -117,8 +117,8 @@ Consider the following formula:
 
 2.2 Logical Validity and Related Notions
 Logical Validities
-There are popositional formulas that receive the calue True no matter what the values of the occuring letters.
-Such formlas are called logically valid, e.g.
+There are propositional formulas that receive the value True no matter what the values of the occurring letters.
+Such formulas are called logically valid, e.g.
   P ==> P, P || not P, P ==> (Q ==> P)
 
 Truth Table of an expression.
@@ -184,8 +184,8 @@ Logically Equivalent
 Two formulas are called (logically) equivalent if, no matter the truth values of the letters P,Q, ... occuring in these formulas, the truth values obtained for them are the same.
 This can be checked by constructing a truth table.
 
-The same concepts of the equallity of functions:
-  f,g :: a -> b, f=g :<=> forall x <- a, f(a) = g(a).
+The same concepts of the equality of functions:
+  f,g :: a -> b, f=g :<=> \forall x <- a, f(a) = g(a).
 
 Example 2.6 (The First Law of De Morgan)
   not (p && q) \equiv (not p || not q)
@@ -364,8 +364,8 @@ Exercise 2.26, 2,27
 Bound Variables.
 Quantifier expressions like
   \forall x, \exists y \in R, etc
-are said to bind every occurance of x,y,etc in their scope.
-If a variable occurs bound in a certain expression then the meaning of that expression does not change when all bound occurences of that variable are replaced by another one. (alpha equivalence of lambda calculus, or "dummy")
+are said to bind every occurrence of x,y,etc in their scope.
+If a variable occurs bound in a certain expression then the meaning of that expression does not change when all bound occurrence of that variable are replaced by another one. (alpha equivalence of lambda calculus, or "dummy")
 
 Example 2.28 (dummy)
 
@@ -386,7 +386,7 @@ Expressing Uniqueness.
 
 Exercise 2.34, 2.35, 2.36
 
-Eemark.
+Remark.
 Expanding the definitions of mathematical concepts is not always a good idea.
 E.g.
   "n is prime" :<=> n>1 && \exists d s.t. (1<d<n && d|n),
@@ -422,13 +422,127 @@ Another way of expressing this is the following:
 
 Let's define a formula:
   isPrime n :\equiv n>1 && \forall m ((1<m<n) ==> not m|n)..
-One way to think about this definition is as a procedure for testing wheter a natural number is prime.
+One way to think about this definition is as a procedure for testing whether a natural number is prime.
 The implementation of ld(n) function in chapter 1 is
   isPrime n :\equiv n>1 && \forall m ((1<m && m^2 <= n) ==> not m|n)
             :\equiv n>1 && ld(n) = n.
 
 2.6 Abstract Formulas and Concrete Structures
+
 Open Formulas, Free Variables, and Satisfaction.
-An occurence of a variable in an expression that is not (any more) in the scope of a quantifier is said to be free in that expression.
+An occurrence of a variable in an expression that is not (any more) in the scope of a quantifier is said to be free in that expression.
 Formulas that contain free variables are called open.
 
+Exercise 2.37, 2.38
+
+2.7 Logical Handling of the Quantifiers
+
+Validities and Equivalents.
+Compare the corresponding definitions in section 2.2.
+  1. A logical formula is called logically valid if it turns out to be true in every structure.
+  2. Formulas are logically equivalent if they obtain he same truth value in every structure.
+
+Exercise 2.39
+The propositional version of Exercise 2.19.
+
+Theorem 2.40
+(In chapter 3, partly will be resolved.)
+
+Exercise 2.41 (negation (not \Phi) of 2.36)
+
+Order of Quantifiers.
+Theorem 2.40.1 says that the order of similar quantifiers (\forall or \exists) is irrelevant.
+But note that this is not the case for different kind of quantifiers.
+
+On the other hand,
+  \exists y \forall x \Phi(x,y) ==> \forall x, \exists y \Phi(x,y),
+since we can take this same y.
+However, if 
+  \forall x \exists y \Phi(x,y)
+holds, it is far from sure that
+  \exists y \forall x \Phi(x,y)
+holds as well.
+
+Example 2.42
+The statement that
+  \forall x \exists y (x<y)
+is true in N(natural numbers), but the statement
+  \exists y \forall x (x<y)
+in this structure wrongly asserts that there exists a greatest natural number. 
+
+Restricted Quantification.
+
+Example 2.43 (Continuity)
+The \epsilon-\delta definition of continuity; a real function f:R -> R is continuous if
+  \forall x \forall e>0 \exists d>0 \forall y (|x-y|<d ==> |f(x)-f(y)|<e).
+This formula uses the restricted quantifiers
+  \forall e>0, and \exists d>0
+that enable a more compact formulation here.
+
+Example 2.44 (restricted quantification, too much)
+
+Remark.
+If A is a subset of the domain of quantification, then
+  \forall x \in A \Phi(x)
+means the same as
+  \forall x (x \in A ==> \Phi(x)),
+whereas,
+  \exists x \in A \Phi(x)
+is tantamount with
+  \exists x (x \in A && \Phi(x)).
+
+Warning (==>, &&)
+
+Example 2.45
+Some Mersenne number are prime is
+  \exists x (M x && P x).
+The translation 
+  \exists x (M x ==> P x)
+is wrong, since it is much too weak, for it expresses that there is a natural number x which is neither a Mersenne nor prime.
+
+In the same way, all prime numbers have irrational sqrt is
+  \forall x \in R (P x ==> sqrt x \nin Q).
+The translation
+  \forall x \in R (P x && sqrt x \nin Q)
+is wrong.
+This time we end up with something which is too strong, for this expresses hat every real number is a prime number is prime with an irrational sqrt.
+
+Restricted Quantifiers Explained.
+Using
+  test3 = (\p q -> p ==> q) `logEquiv2` (\p q -> ((not p) || q))
+in Theorem 2.10,
+  not \forall x \in A \Phi 
+    = not \forall x (x \in A ==> \Phi(x))
+    = \exists x not (x \in A ==> \Phi(x))
+    = \exists x (x \in A && not \Phi(x))
+    = \exists x \in A not \Phi(x)
+
+Exercise 2.46
+  not \exists x \in A \Phi(x)
+    = \forall x \in A not \Phi(x)
+    = \exists x \nin A \Phi(x)
+
+Exercise 2.47
+  \exists x \nin A not \Phi(x)
+    = \forall x \in A \Phi(x)
+    
+    \= \exists x \in A not \Phi(x)
+
+Exercise 2.48
+
+Example 2.49 (Discontinuity Explained)
+  not \forall e>0 \exists d>0 \forall y (|x-y|<d ==> |f(x)-f(y)|<e)
+Using Theorem 2.40, this can be transformed in
+  \exists e>0 \forall d>0 \exists y not(|x-y|<d ==> |f(x)-f(y)|<e)
+According to Theorem 2.10,
+  \exists e>0 \forall d>0 \exists y (|x-y|<d && not |f(x)-f(y)|<e)
+i.e., 
+  \exists e>0 \forall d>0 \exists y (|x-y|<d && |f(x)-f(y)| => e).
+
+Different Sorts.
+
+Exercise 2.50
+The sequence a_i (i=0,1,...) in R converges to a means that
+  \forall d>0 \exiss n \forall m => n (|a-a_m|<d).
+The negation is
+  \exists d>0 \forall n \exists m < n (|a-a_m| => d).
