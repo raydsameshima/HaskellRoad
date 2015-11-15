@@ -134,7 +134,8 @@ Exercise 1.9
 Exercise 1.10
 A function removeFst that removes the first occurence of an integer m from a list of integers.
 
-> removeFst :: Int -> [Int] -> [Int]
+> -- removeFst :: Int -> [Int] -> [Int]
+> removeFst :: Ord a => a -> [a] -> [a]
 > removeFst m [] = error "empty list[]!"
 > removeFst m [n] 
 >   | m == n    = []
@@ -163,8 +164,8 @@ A function that calculates the average of a list of numbers.
 > average [] = error "empty list[]!"
 > average [n] = n
 > average lst = sumOfList / lengthOfList
->   where sumOfList = toRational . sum' $ lst
->         lengthOfList = toRational . length' $ lst 
+>   where sumOfList = toRational . sum $ lst
+>         lengthOfList = toRational . length $ lst 
 
   *GS_01> :info average 
   average :: [Rational] -> Rational   -- Defined at GS_01.lhs:159:3
@@ -172,9 +173,13 @@ A function that calculates the average of a list of numbers.
 > sum' :: Num a => [a] -> a
 > sum' [] = 0
 > sum' (x:xs) = x + sum' xs
-> length' :: Num a => [t] -> a
+
+> length' :: [a] -> Int
 > length' [] = 0
 > length' (x:xs) = 1 + length' xs
+
+> length'' :: [a] -> Int
+> length'' = sum . map' (\_ -> 1) 
 
 type synonym
   *GS_01> :info String
@@ -185,7 +190,7 @@ Exercise 1.13
 > count :: Char -> String -> Int
 > count _ [] = 0
 > count s (t:ts) 
->   | s == t = 1+ count s ts
+>   | s == t    = 1 + count s ts
 >   | otherwise = count s ts
 
 Exercise 1.14
@@ -199,6 +204,8 @@ A function that converts a string to another:
 
 > blowup = concat . map helper . zip [1..]
 
+See the solution!
+
 Exercise 1.15
 A sort function in alphabetical order.
 
@@ -209,6 +216,24 @@ A sort function in alphabetical order.
 >         right= x:( sortString [y| y<- xs, y>=x])
 
 This is actually the quicksort!
+
+Naively, we shold use the following implementations.
+mnm function will find the minimum element of the list of Ord instances.
+
+> mnm :: Ord a => [a] -> a
+> mnm [] = error "empty list"
+> mnm [x] = x
+> mnm (x:xs) = min x (mnm xs) 
+
+Using mnm, our sort function becomes 
+
+> sort :: Ord a => [a] -> [a]
+> sort [] = []
+> sort xs = minElement : restList
+>   where minElement = mnm xs 
+>         restList = sort $ removeFst minElement xs  
+
+bubble sort?
 
 Exercise 1.16
 Another isPrefix function.
@@ -268,16 +293,18 @@ An introduction to higher order functions, or functionals.
 > map' f (x:xs) = (f x) : map' f xs   
 
 Exercise 1.20
-Write length function using map.
+Write lengths that takes a list of lists and returns the the sum of their lengths using map.
 
-> length'' :: [a] -> Int
-> length'' = sum . map' (\_ -> 1) 
+> lengths :: [[a]] -> [Int]
+> lengths = map length'
 
 Exercise 1.21
 Use map to write a function sumLengths that takes a list of lists and return the sum of thier lengths.
 
-> sumLengths :: [[a]] -> Int
-> sumLengths = sum . map length''
+> sumLengths, sumLengths' :: [[a]] -> Int
+> sumLengths = sum . map length'
+>
+> sumLengths' = sum . lengths
 
 > filter' :: (a -> Bool) -> [a] -> [a]
 > filter' p [] = []
