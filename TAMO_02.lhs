@@ -285,7 +285,12 @@ Produce useful denial for every sentence of Exercise 2.31, i.e. for every formul
 Exercise 2.17
   x < y < z \equiv x<y && y<z
 Therefore its denial is
-  x>=x || y>=z
+  x>=x || y>=z,
+where
+   Prelude> :type (<=)
+  (<=) :: Ord a => a -> a -> Bool
+  Prelude> :type (>=)
+  (>=) :: Ord a => a -> a -> Bool
 
 Exercise 2.18
 Show:
@@ -555,7 +560,7 @@ Different Sorts.
 
 Exercise 2.50
 The sequence a_i (i=0,1,...) in R converges to a means that
-  \forall d>0 \exiss n \forall m >= n (|a-a_m|<d).
+  \forall d>0 \exists n \forall m >= n (|a-a_m|<d).
   
 Note:
   Prelude> :type (<=)
@@ -564,8 +569,8 @@ Note:
   (>=) :: Ord a => a -> a -> Bool
 
 The negation is
-  not \forall d>0 \exiss n \forall m >= n (|a-a_m|<d)
-  \exists d>0 not \exiss n \forall m >= n (|a-a_m|<d)
+  not \forall d>0 \exists n \forall m >= n (|a-a_m|<d)
+  \exists d>0 not \exists n \forall m >= n (|a-a_m|<d)
   \exists d>0 \forall n not \forall m >= n (|a-a_m|<d)
   \exists d>0 \forall n \exists m >= n not (|a-a_m|<d)
 Therefore,
@@ -574,4 +579,68 @@ Therefore,
 See 
   http://www.econ.hit-u.ac.jp/~yamada/set_topology1_pdf/note7.pdf
 Q.E.D.
+
+2.8 Quantifiers as Procedures
+One way to look at the meaning the universal quantifier
+  \forall
+is as a procedure to test whether a set has a certain property.
+
+In the same way, the meaning of the unrestricted existential quantifier
+  \exists
+can be specified as a procedure.
+\exists takes a set as argument, and yields True just in case the argument set is non-empty.
+
+In Haskell, they are predefined as all and any:
+  *TAMO_02> :type any
+  any :: Foldable t => (a -> Bool) -> t a -> Bool
+  *TAMO_02> :type all
+  all :: Foldable t => (a -> Bool) -> t a -> Bool
+
+> any', all' :: (a -> Bool) -> [a] -> Bool
+> all' p = and . map p 
+> any' p = or . map p
+
+Note
+These definitions are already point-free styled, and
+  *TAMO_02> :type or
+  or :: Foldable t => t Bool -> Bool
+  *TAMO_02> :type and
+  and :: Foldable t => t Bool -> Bool
+are the gereralizations of inclusive disjunction and conjunction to lists.
+
+  *TAMO_02> all (<(2^20)) [0..]
+  False
+  (0.38 secs, 146,184,928 bytes)
+  *TAMO_02> any (<(2^20)) [0..]
+  True
+  (0.01 secs, 3,108,376 bytes)
+
+After hitting 
+  (<(2^20)) 2^20 = False
+all stop evaluating and returns False, and any knows
+  (<(2^20)) 0 = True
+and immediately returns True.
+
+The functions every and some get us even closer to standard logical notation.
+
+> every, some :: Foldable t => t a -> (a -> Bool) -> Bool
+> every xs p = all p xs
+> some xs p = any p xs
+
+Now, e.g., the formula 
+  \forall x \in [1,4,9] \exists y \in [1,2,3] x==y^2
+can be implemented as a test, as follows:
+  *TAMO_02> every [1,4,9] (\x -> some [1,2,3] (\y -> x == y^2))
+  True
+
+But caution: the implementations of the quantifiers are procedures, not algorithms.
+A call to all or any need NOT terminate:
+  every [0..] (>=0)
+This will run forever.
+This illustrates once more that the quantifiers are in essence more complex than the propositional connectives.
+
+Exercise 2.51
+
+unique :: (a -> Bool) -> [a] -> Bool
+
 
