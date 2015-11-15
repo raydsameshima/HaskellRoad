@@ -617,7 +617,7 @@ are the gereralizations of inclusive disjunction and conjunction to lists.
 
 After hitting 
   (<(2^20)) 2^20 = False
-all stop evaluating and returns False, and any knows
+all function stops evaluating and returns False, and any function knows
   (<(2^20)) 0 = True
 and immediately returns True.
 
