@@ -31,7 +31,7 @@ if, and only if: equivalence
 Remark
 Do not confuse (if, then) on one hand with (thus), (so), (therefore) on the other.
 The difference is that the phrase (if, then) is used to construct conditional statements, while (thus), (so), (therefore) are used to combine statements into pieces of mathematical reasoning (or: mathematical proofs).
-We will never write (=>) when we want to conclude from one mathematical statement to the next.
+We will never write (==>) when we want to conclude from one mathematical statement to the next.
 The rules of inference, the notion of mathematical proof, and the proper use of the word (thus) are the subject of Chapter 3.
 
 iff = if, and only if
@@ -94,7 +94,7 @@ P <=> Q := P ==> Q && Q ==> P
 > x <=> y = x == y
 
 Example 2.3
-P => Q is the only if part, and P <= Q is if part.
+P ==> Q is the only if part, and P <== Q is if part.
 
 Exercise 2.4
 Check the equivalence of or (P `xor` Q) and (not (P <=> Q)).
@@ -285,7 +285,7 @@ Produce useful denial for every sentence of Exercise 2.31, i.e. for every formul
 Exercise 2.17
   x < y < z \equiv x<y && y<z
 Therefore its denial is
-  x=>x || y=>z
+  x>=x || y>=z
 
 Exercise 2.18
 Show:
@@ -446,6 +446,18 @@ Exercise 2.39
 The propositional version of Exercise 2.19.
 
 Theorem 2.40
+1.
+  \forall x \forall y \Phi(x,y) \equiv \forall y \forall x \Phi(x,y)
+  \exists x \exists y \Phi(x,y) \equiv \exists y \exists x \Phi(x,y)
+
+2.
+  not \forall x \Phi(x) \equiv \exists not \Phi(x)
+  not \exists x \Phi(x) \equiv \forall not \Phi(x)
+
+3.
+  \forall x (\Phi(x) && \Psi(x)) \equiv (\forall x \Phi(x) && \Psi(x))
+  \exists x (\Phi(x) || \Psi(x)) \equiv (\exists x \Phi(x) || \Psi(x))
+
 (In chapter 3, partly will be resolved.)
 
 Exercise 2.41 (negation (not \Phi) of 2.36)
@@ -543,6 +555,19 @@ Different Sorts.
 
 Exercise 2.50
 The sequence a_i (i=0,1,...) in R converges to a means that
-  \forall d>0 \exiss n \forall m => n (|a-a_m|<d).
+  \forall d>0 \exiss n \forall m >= n (|a-a_m|<d).
+  
+Note:
+  Prelude> :type (<=)
+  (<=) :: Ord a => a -> a -> Bool
+  Prelude> :type (>=)
+  (>=) :: Ord a => a -> a -> Bool
+
 The negation is
-  \exists d>0 \forall n \exists m < n (|a-a_m| => d).
+  not \forall d>0 \exiss n \forall m >= n (|a-a_m|<d)
+  \exists d>0 not \exiss n \forall m >= n (|a-a_m|<d)
+  \exists d>0 \forall n not \forall m >= n (|a-a_m|<d)
+  \exists d>0 \forall n \exists m >= n not (|a-a_m|<d)
+Therefore,
+  \exists d>0 \forall n \exists m >= n (|a-a_m|>=d).
+Q.E.D.
