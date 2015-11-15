@@ -570,4 +570,8 @@ The negation is
   \exists d>0 \forall n \exists m >= n not (|a-a_m|<d)
 Therefore,
   \exists d>0 \forall n \exists m >= n (|a-a_m|>=d).
+
+See 
+  http://www.econ.hit-u.ac.jp/~yamada/set_topology1_pdf/note7.pdf
 Q.E.D.
+
