@@ -575,3 +575,5 @@ See
   http://www.econ.hit-u.ac.jp/~yamada/set_topology1_pdf/note7.pdf
 Q.E.D.
 
+2.8 Quantifiers as Procedures
+
