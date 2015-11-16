@@ -202,9 +202,15 @@ A function that converts a string to another:
 >   | n < 1     = [] 
 >   | otherwise = c : (helper (n-1, c))
 
+> blowup :: String -> String
 > blowup = concat . map helper . zip [1..]
 
-See the solution!
+Of course, we can use the naive recursions:
+
+> blowup' :: String -> String
+> blowup' lst = f lst 1
+>   where f [] _ = []
+>         f (x:xs) n = helper (n, x) ++ (f xs (n+1))
 
 Exercise 1.15
 A sort function in alphabetical order.

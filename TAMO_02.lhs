@@ -641,6 +641,30 @@ This will run forever.
 This illustrates once more that the quantifiers are in essence more complex than the propositional connectives.
 
 Exercise 2.51
+Define \exists!, that is, uniquely exists.
 
-unique :: (a -> Bool) -> [a] -> Bool
+> unique :: (a -> Bool) -> [a] -> Bool
+> unique bf lst = (length . filter bf $ lst) == 1
+
+This function is also ill-terminate function.
+
+Exercise 2.52
+Define a function 
+  parity :: [Bool] -> Bool
+that gives True for the case an even number of bools are True.
+
+> parity :: [Bool] -> Bool
+> parity bs = even . length . filter (==True) $ bs
+
+Exercise 2.53
+Define
+  evenNR :: (a -> Bool) -> [a] -> Bool
+that gives True in case an even number of the list elements have property p.
+
+> evenNR :: (a -> Bool) -> [a] -> Bool
+> evenNR bf lst = even . length . filter bf $ lst
+
+Or using the above parity function,
+
+> evenNR' bf = parity . map bf
 
