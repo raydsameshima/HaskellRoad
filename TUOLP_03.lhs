@@ -38,3 +38,19 @@ Exercise 3.34
 Show that
   A := [4*n + 3| n<-[0..]]
 contains infinitely many primes.
+
+Proof
+Let us assume there are only finitely many primes in A:
+  A = [p(1),p(2)... p(n)| p(i) = 4*n(i) + 3]
+Consider
+  N := 4*p(1)* ... *p(n) -1
+    =  4*(p(1)* ... *p(n) -1) + 3
+Clearly N is an odd number.
+If N is prime, we have a contradiction.
+Otherwise N has a prime factor q, different from all p's.
+  N = q * N'
+Now, q has the form either
+  4*r + 1 or 4*r + 3,
+since q>2 is an odd prime.
+If q = 4*r + 3 then done, so it suffices to consider q = 4*r + 1 form.
+
