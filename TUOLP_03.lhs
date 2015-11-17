@@ -41,16 +41,26 @@ contains infinitely many primes.
 
 Proof
 Let us assume there are only finitely many primes in A:
-  A = [p(1),p(2)... p(n)| p(i) = 4*n(i) + 3]
-Consider
+  A = [p(1),p(2)... p(n)| p(i) = 4*n(i) + 3, i<-[1..n]]
+Consider the following number N
   N := 4*p(1)* ... *p(n) -1
     =  4*(p(1)* ... *p(n) -1) + 3
-Clearly N is an odd number.
+Clearly N is an odd number and N does not have p's as its factors.
 If N is prime, we have a contradiction.
 Otherwise N has a prime factor q, different from all p's.
   N = q * N'
-Now, q has the form either
-  4*r + 1 or 4*r + 3,
-since q>2 is an odd prime.
-If q = 4*r + 3 then done, so it suffices to consider q = 4*r + 1 form.
+Now, q>2 has the form either
+  4*r + 1 or 4*r + 3
+If q = 4*r + 3 then done, since q in not in A; a contradiction.
+So it suffices to consider q = 4*r + 1 form.
+Since
+  (4*a+1)*(4*b+1) = 4*(4*a*b + a + b) + 1
+we can assume
+  N = q * N'
+    = (4*r+1)*(4*s+3)
+but this (4*s+3) in not A; a contradiction.
+Therefore the set A has infinitely many primes.
+
+Q.E.D.
+
 
