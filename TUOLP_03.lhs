@@ -16,6 +16,7 @@ TUOLP_03.lhs
 
 3.7 Reasoning and Computation with Primes
 In this section we'll demonstrate the use of the computer for investigating the theory of prime numbers.
+'(prime) of prime' is for later convinience.
 
 > prime :: Integer -> Bool
 > prime n 
@@ -29,7 +30,7 @@ In this section we'll demonstrate the use of the computer for investigating the 
 >   | p^2 > m      = m
 >   | otherwise    = ldpf ps m
 >
-> primes = 2: filter prime [3,5..]
+> primes' = 2: filter prime [3,5..]
 
 Theorem 3.33 (Euclid)
 There are infinitely many prime numbers.
@@ -62,5 +63,64 @@ but this (4*s+3) in not A; a contradiction.
 Therefore the set A has infinitely many primes.
 
 Q.E.D.
+
+Example 3.35
+  *TUOLP_03> map prime [2^(2^5)+1, 2^(2^6)+1]
+  [False,False]
+
+Exercise 3.36
+
+M_(a*b) := 2^(a*b)-1
+        =  2^(a*b) + 2^((a-1)*b) + ... + 2^b
+                   - 2^((a-1)*b) - ... - 2^b -1
+        =  (2^b-1)*(2^((a-1)*b) + ... + 2^(2*b) + 2^b + 1)
+
+Example 3.37 (Mersenne)
+  *TUOLP_03> prime 31
+  True
+  *TUOLP_03> prime (2^31-1)
+  True
+
+Exercise 3.38
+Sieve of Eratosthenes
+
+> sieve :: [Integer] -> [Integer]
+> sieve (0:ns) = sieve ns
+> sieve (n:ns) = n: sieve (mark ns 1 n)
+>   where mark :: [Integer] -> Integer -> Integer -> [Integer]
+>         mark (y:ys) k m
+>           | k == m    = 0:(mark ys 1     m)
+>           | otherwise = y:(mark ys (k+1) m)
+> primes :: [Integer]
+> primes = 2: sieve [3,5..] 
+
+Example 3.39
+Write a Haskell program to refute the following statement; if
+  p_1, ... ,p_k
+are all the primes < n, then
+  product [p_1 ... p_k] + 1
+is a prime.
+
+A computer is a useful tool for refuting guesses or for checking particular cases.
+
+  *TUOLP_03> let example = [take n primes | n <- [0..], not $ prime $ product (take n primes) +1]
+  (0.01 secs, 2,055,496 bytes)
+  *TUOLP_03> example 
+  [[2,3,5,7,11,13],[2,3,5,7,11,13,17],[2,3,5,7,11,13,17,19],[2,3,5,7,11,13,17,19,23],[2,3,5,7,11,13,17,19,23,29]^CInterrupted.
+
+  *TUOLP_03> let mersenne = [(p,2^p-1) | p <- primes, prime (2^p-1)]
+  (0.01 secs, 2,100,912 bytes)
+  *TUOLP_03> mersenne 
+  [(2,3),(3,7),(5,31),(7,127),(13,8191),(17,131071),(19,524287)^CInterrupted.
+
+Check the project called GIMPS as "Great Internet Mersenne Prime Search". 
+
+  *TUOLP_03> let notMersenne = [(p,2^p-1) | p <- primes, not $ prime (2^p-1)]
+  (0.01 secs, 2,063,336 bytes)
+  *TUOLP_03> notMersenne 
+  [(11,2047),(23,8388607),(29,536870911)^CInterrupted.
+
+Example 3.40 (OPEN PROBLEM!)
+Are there infinitely many Mersenne primes?
 
 
