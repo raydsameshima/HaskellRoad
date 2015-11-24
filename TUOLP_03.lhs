@@ -94,6 +94,8 @@ Sieve of Eratosthenes
 > primes :: [Integer]
 > primes = 2: sieve [3,5..] 
 
+https://wiki.haskell.org/Prime_numbers#Sieve_of_Eratosthenes
+
 Example 3.39
 Write a Haskell program to refute the following statement; if
   p_1, ... ,p_k
@@ -123,4 +125,81 @@ Check the project called GIMPS as "Great Internet Mersenne Prime Search".
 Example 3.40 (OPEN PROBLEM!)
 Are there infinitely many Mersenne primes?
 
+Mersenne primes are related to so-called perfect numbers.
+A perfect number is a number n with the sum of all its divisors equals 2*n.
+(Or the sum of all proper divisor of n equals n.)
+E.g.,
+  6 = 1*6 = 2*3 = 3*2 = 6*1
+  1+2+3 = 6 
 
+Exercise 3.41 (Euclid)
+If 2^n-1 is prime, then 2^(n-1)*(2^n-1) is perfect.
+
+Proof
+The proper divisors 2^(n-1)*(2^n-1) are 
+  1=2^0,2,2^2, .. ,2^(n-1), 2^n-1, 2*(2^n-1), .. , 2^(n-2)*(2^n-1)
+Therefore the sum is
+  2^n-1 + (2^n-1)*(2^(n-1)-1) = 2^(n-1)*(2^n-1)
+
+Q.E.D.  
+
+Here is a function for generating the list of proper divisor.
+(This is not an efficient way to generate proper divisors.)
+
+> pdivisors :: Integer -> [Integer]
+> pdivisors n = [d | d <- [1..(n-1)], n `rem` d == 0]
+
+  *TUOLP_03> pdivisors 8128
+  [1,2,4,8,16,32,64,127,254,508,1016,2032,4064]
+  *TUOLP_03> sum it
+  8128
+
+Prime pairs
+
+> primePairs :: [(Integer,Integer)]
+> primePairs = pairs primes
+>   where pairs (x:y:xys)
+>           | x+2 == y  = (x,y): pairs (y:xys)
+>           | otherwise = pairs (y:xys)
+
+  *TUOLP_03> take 50 primePairs 
+  [(3,5),(5,7),(11,13),(17,19),(29,31),(41,43),(59,61),(71,73),(101,103),(107,109),(137,139),(149,151),(179,181),(191,193),(197,199),(227,229),(239,241),(269,271),(281,283),(311,313),(347,349),(419,421),(431,433),(461,463),(521,523),(569,571),(599,601),(617,619),(641,643),(659,661),(809,811),(821,823),(827,829),(857,859),(881,883),(1019,1021),(1031,1033),(1049,1051),(1061,1063),(1091,1093),(1151,1153),(1229,1231),(1277,1279),(1289,1291),(1301,1303),(1319,1321),(1427,1429),(1451,1453),(1481,1483),(1487,1489)]
+
+The question
+  whether there are infinitely many prime pairs?
+is another open problem of mathematics.
+
+Exercise 3.42 (prime triples)
+The prime triple is only (3,5,7).
+
+Proof
+Let us write the prime triple
+  (p, p+2, p+4)
+p>1, there only are the following two
+  p = 3*q+1 ==> p+2 is NOT a prime
+  p = 3*q+2 ==> p+4 is NOT a prime
+Thus, only p=1 case holds.
+
+Q.E.D.
+
+Exersice 3.43
+Consider the following call:
+  
+  *TUOLP_03> filter prime [p^2+2 | p<- primes]
+  [11^CInterrupted.
+
+It suffices to consider
+  p = 3*n
+  p = 3*n+1
+  p = 3*n+2
+In p=3*n case, only p = 3 is a prime.
+If p = 3*n+1, then p^2 + 2 becomes
+  (3*n+1)^2+2 = 3*(3*n^2 + 2*n + 1)
+non a prime.
+Similarly,
+  (3*n+2)^2+2 = 3*(3*n^2 + 6*n + 2)
+is not a prime.
+Therefore, p = 3 only satisfies
+  p^2+2 :: prime
+
+Q.E.D.
