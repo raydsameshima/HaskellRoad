@@ -40,3 +40,8 @@ Principle of Extensionality.
 Sets that have the same elements are equall.
   \forall x (x \in A <=> x \in B) ==> A = B
 
+Subsets.
+  \forall x ( x <- A ==> x <- B)
+
+Note that
+  A = B <=> (A \subset B && B \subset A)
