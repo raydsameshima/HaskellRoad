@@ -4,7 +4,7 @@ Chapter 4
 Sets, Types and Lists
 
 > module STAL_04 where
-> -- import List 
+> import Data.List 
 > import DB
 
 4.1 Let's Talk About Sets
@@ -154,4 +154,46 @@ Suppose halts can be defined, then define the procedure funny
     | otherwise = True
 
 What about the call funny funny?
+
+Suppose funny funny does not halt, then by definition, we are in the first case, because second case does halt.
+But the argument is now funny funny, and therefore funny funny should halt, but contradiction.
+
+Suppose funny funny halts, then by definition, we are in the second case.
+However, if fuuny funny halts, we should be in the first case, then funny funny does not halt, and contradiction.
+
+Thus, there is something wrong with the definition of funny.
+The only peculiarity of definition is the use of the halts predicate.
+This shows that such halts predicate cannot be implemented.
+
+Q.E.D.
+
+It should be clear that funny is a rather close analogue to the Russell set
+  {x | x \nin x}.
+Such paradoxical definitions are avoided in functional programming by keeping track of the types of all objects and operations.
+
+How does type discipline avoid the halting paradox?
+
+Consider the definition of funny:
+  funny x
+    | halts x x = undefined
+    | otherwise = True
+It makes a call to halts.
+What is the type of halts?
+The procedure halts takes as first argument a procedure, say proc, and as second argument to that procedure, say arg.
+This means that
+  proc :: a -> b
+  arg :: a
+and
+  proc arg :: b
+but this means that the application 
+  halts x x
+is the definition of funny is ill-formed, for as we have seen the types of the two arguments to halts must be different, so the arguments themselves must be different.
+
+Another example (elem)
+In order to be able to identify things, they should be instances of Eq.
+Haskell operations denotes computation procedures, and there is no principled way to check whether two procedures perform the same task.
+
+Exercise 4.8
+
+4.3 Special Sets
 
