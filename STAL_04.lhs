@@ -196,4 +196,118 @@ Haskell operations denotes computation procedures, and there is no principled wa
 Exercise 4.8
 
 4.3 Special Sets
+Singletons.
+  {a}
+
+Remark.
+Whether the equation
+  a = {a}
+has solutions is answered differently by different axiomatizations of set theory.
+
+> ones = 1:ones
+
+A set of the form
+  {a,b}
+is called an unordered pair.
+Of course, if a=b, then
+  {a,b} = {a}
+is, in fact, a singleton.
+
+Empty Set.
+  {} or \emptyset
+
+Note that there is exactly one set that is empty: this is due to Extensionality:
+Let {},{}' be different empty sets, but by Extensionality,
+  {} = {}'
+since they have no elements.
+
+Theorem 4.9
+For every set A, we have that
+  {} \in A.
+
+Proof
+Since
+  \forall x(x \in {} ==> x \in A)
+is true, because {} has no element.
+Thus
+  {} \in A
+holds.
+
+Q.E.D.
+
+Exercise 4.10, 4.11
+
+Remark. Abstraction and Restricted Quantification.
+Note that
+  \forall x \in A \Phi(x) = True <=> {x\in A| Phi(x)} = A.
+Similarly,
+  \exists x \in A Phi(x) = True <=> {x\in A | Phi(x)} \neq {}.
+
+4.4 Algebra of Sets
+Definition 4.12 (Intersection, Union, Difference.)
+Assume that A and B are sets.
+1. A \cap B = {x | x<-A && x<-B} 
+2. A \cup B = {x | x<-A || x<-B}
+3. A - B    = {x | x<-A && not(x <- B)}
+
+Types of Set Theoretic Expressions
+&&, || and \cap, \cup has different "type".
+
+Exercise 4.13
+What are the types of the set difference operator - and of the inclusion operator?
+  (-) :: Set s => s -> s -> s
+  (\subset) :: s -> s -> Bool
+
+Exercise 4.14 
+
+The relationships become clearer if we write
+1. x<-A \cap B <=> x<-A && x<-B}
+2. x<-A \cup B <=> x<-A || x<-B
+3. x<-A - B    <=> x<-A && not(x <- B)
+
+Disjointness.
+Sets A anb B are called disjoint if
+  A \cap B = {}
+
+Example 4.15
+
+Theorem 4.16 
+Theorem 4.17
+Example 4.18
+Exercise 4.19
+
+Complement.
+Fix a set X (as a universe), of which all sets to be considered are subsests.
+The complement is given by
+  A^c := X - A
+Clearly, we have that for all x<-X,
+  x <- A^c <=> x \nin A
+
+Theorem 4.20
+
+Symmetric Difference.
+A \oplus B := {x|x\in A \xor x\in B}
+
+Exercise 4.21
+
+Definition 4.22 (Power Set)
+The powerset of the set X is
+  2^X := {A|A\subset X}
+
+Exercise 4.23
+(\subset, 2^X) has the propeties of reflexivity, antisymmetry and transitivity, like (<=, R).
+The relation <= on R has linearity;
+  \forall x,y \in R, x<=y or y<=x.
+Show that 2^X lacks this property.
+(E.g., take X:={0,1}, then clearly {0},{1} \subset X, but we have no inclusion relation between {0},{1}.)
+
+Definition 4.24 (Generalized Union and Intersection)
+
+Example 4.25, 4.26
+
+Types of Generalized Union and Intersection
+
+Exercise 4.27
+
+
 
