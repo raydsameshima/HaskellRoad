@@ -71,10 +71,11 @@ The abstraction notation binds the variable x:
 
 As lists we can "proove" the follwing two are equivalent:
 
-> small_squares1 = [n^2 | n <- [0..999]]
+> small_squares1 = [n^2 | n <- [0..999]] -- restriction: see page 121
 > small_squares2 = [n^2 | n <- naturals, n < 1000]
 
 But Haskell behave differently, small_squares2 won't terminate.
+The 1st pattern, small_squares1 is good, because it restrict its "universe" and therefore it will terminate.
 
 Example 4.5 (The Russel Paradox)
   R := { x | x \nin x}
@@ -303,11 +304,48 @@ Show that 2^X lacks this property.
 
 Definition 4.24 (Generalized Union and Intersection)
 
-Example 4.25, 4.26
+A set of sets is sometimes called a family of sets or a collection of sets.
+(Of course we can NOT take "a set of all sets", but we can take a class or all sets.)
+
+Example 4.25
+
+Example 4.26
+Let F and G be collections of sets.
+The translation of 
+  \cup F \subset \cap G
+becomes
+  \forall x (\exists X(X \in F && x \in X)) ==> \forall Y(Y \in G ==> x \in Y)
+Similarly, the translation of
+  \cap F \subset \cup G
+becomes
+  \forall x(\forall X(X \in F ==> x \in X)) ==> \exists Y(Y \in G && x \in Y)
+
+Q.E.D.
 
 Types of Generalized Union and Intersection
+Their type is
+  {s} -> s,
 
 Exercise 4.27
+Let F be a family of sets.
+Show that there is a set A with the following properties:
+  1. F \subset 2^A,
+  2. \forall sets B, if F \subset 2^B, then A \subset B.
 
+Proof.
+Take A:=2^(\cup F), then
+  \forall X(X \in F ==> X \subset \cup F)
+  <=> \forall X(X \in F ==> X \in 2^(\cup F))
+  <=> F \subset 2^(\cup F)
+and
 
+ 
+
+Example4.28
+
+Exercise 4.29 (Theorem 4.20)
+
+Exercise 4.30
+
+Exercise 4.31
 
