@@ -607,7 +607,7 @@ These definitions are already point-free styled, and
   or :: Foldable t => t Bool -> Bool
   *TAMO_02> :type and
   and :: Foldable t => t Bool -> Bool
-are the gereralizations of inclusive disjunction and conjunction to lists.
+are the generalizations of inclusive disjunction and conjunction to lists.
 
   *TAMO_02> all (<(2^20)) [0..]
   False

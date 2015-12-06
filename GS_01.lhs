@@ -53,7 +53,7 @@ Therefore,
 
 Q.E.D.
 
-Note; for later convinience,
+Note; for later convenience,
   if n>1:: non prime, then (ld(n))^2 <= n,
 is equivalent to its contraposition:
   if (ld(n))^2 > n, then n>1 :: prime.
@@ -223,7 +223,7 @@ A sort function in alphabetical order.
 
 This is actually the quicksort!
 
-Naively, we shold use the following implementations.
+Naively, we should use the following implementations.
 mnm function will find the minimum element of the list of Ord instances.
 
 > mnm :: Ord a => [a] -> a
@@ -305,7 +305,7 @@ Write lengths that takes a list of lists and returns the the sum of their length
 > lengths = map length'
 
 Exercise 1.21
-Use map to write a function sumLengths that takes a list of lists and return the sum of thier lengths.
+Use map to write a function sumLengths that takes a list of lists and return the sum of their lengths.
 
 > sumLengths, sumLengths' :: [[a]] -> Int
 > sumLengths = sum . map length'
@@ -332,7 +332,7 @@ An improvement of ld.
 The helper function ldf checks k|n for all k with
   2 <= k <= sqrt(n)
 by +1 step.
-In fact, it is enogh to check p|n for the primes p with
+In fact, it is enough to check p|n for the primes p with
   2 <= p <= sqrt(n).
 
 > ldp :: Integer -> Integer

@@ -16,11 +16,11 @@ TUOLP_03.lhs
 
 3.7 Reasoning and Computation with Primes
 In this section we'll demonstrate the use of the computer for investigating the theory of prime numbers.
-'(prime) of prime' is for later convinience.
+'(prime) of prime' is for later convenience.
 
 > prime :: Integer -> Bool
 > prime n 
->   | n < 0     = error "not a posive"
+>   | n < 0     = error "not a positive"
 >   | n == 1    = False
 >   | otherwise = ldp n == n
 >
@@ -182,7 +182,7 @@ Thus, only p=1 case holds.
 
 Q.E.D.
 
-Exersice 3.43
+Exercise 3.43
 Consider the following call:
   
   *TUOLP_03> filter prime [p^2+2 | p<- primes]

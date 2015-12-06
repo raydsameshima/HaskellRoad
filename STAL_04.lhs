@@ -10,22 +10,22 @@ Sets, Types and Lists
 4.1 Let's Talk About Sets
 There are several axiomatic approaches to set theory; the standard one is due to Zermelo and Frankel.
 
-From wikipedia
+From Wikipedia
 1. Axiom of extensionality
 2. Axiom of regularity (foundation)
 3. Axiom schema of specification (separation, or restricted comprehension)
 4. Axiom of pairing
 5. Axiom of union
-6. Axiom shema of replacement
+6. Axiom schema of replacement
 7. Axiom of infinity
 8. Axiom of power set
 
-The follwoing axiom is added to turn ZF into ZFC:
+The following axiom is added to turn ZF into ZFC:
 9. Well-ordering theorem
 
 Axioms vs. Theorems, Primitive vs. Defined Notions.
 
-Georg Cantor (1845-1915), the founding father of set theory, gave the follwing description.
+Georg Cantor (1845-1915), the founding father of set theory, gave the following description.
 
 The Comprehension Principle.
 A set is a collection into a whole of definite, distinct objects of our intuition or or our thought.
@@ -37,7 +37,7 @@ But it is not excluded at all that members are sets.
 Thus, in practice, we can encounter sets of sets of ... sets.
 
 Principle of Extensionality.
-Sets that have the same elements are equall.
+Sets that have the same elements are equal.
   \forall x (x \in A <=> x \in B) ==> A = B
 
 Subsets.
@@ -51,7 +51,7 @@ A \subset A (reflexivity)
 A \subset B && B \subset A ==> A = B (antisymmetry)
 A \subset B && B \subset C ==> A \subset C (transitivity)
 
-Exersise 4.2
+Exercise 4.2
 Show that the superset relation also has the properties of Theorem 4.1, i.e., show that \superset is reflexive, antisymmetric and transitive.
 
 Enumeration.
@@ -69,7 +69,7 @@ The abstraction notation binds the variable x:
 > odds1 = [n | n <- naturals, odd n]
 > even2 = [2*n | n <- naturals]
 
-As lists we can "proove" the follwing two are equivalent:
+As lists we can "prove" the following two are equivalent:
 
 > small_squares1 = [n^2 | n <- [0..999]] -- restriction: see page 121
 > small_squares2 = [n^2 | n <- naturals, n < 1000]
@@ -89,7 +89,7 @@ There is no set corresponding to the properties
           ... <- x2 <- x1 <- x0 = x
 
 Assume the contrary that F is such a set, and assume F <- F.
-This imlies an infinite sequence
+This implies an infinite sequence
   ... F <- F <- F <- F
 So by the defining property of F, F \nin F.
 
@@ -129,7 +129,7 @@ taking
   B := { x <- A | x \nin x }
 
 4.2 Paradoxes, Types and Type Classes
-... there is no general test for checking wheter a given procedure terminates for a particular input.
+... there is no general test for checking whether a given procedure terminates for a particular input.
 The halting problem is undecidable.
 
 Collatz problem
@@ -160,7 +160,7 @@ Suppose funny funny does not halt, then by definition, we are in the first case,
 But the argument is now funny funny, and therefore funny funny should halt, but contradiction.
 
 Suppose funny funny halts, then by definition, we are in the second case.
-However, if fuuny funny halts, we should be in the first case, then funny funny does not halt, and contradiction.
+However, if funny funny halts, we should be in the first case, then funny funny does not halt, and contradiction.
 
 Thus, there is something wrong with the definition of funny.
 The only peculiarity of definition is the use of the halts predicate.
@@ -278,7 +278,7 @@ Example 4.18
 Exercise 4.19
 
 Complement.
-Fix a set X (as a universe), of which all sets to be considered are subsests.
+Fix a set X (as a universe), of which all sets to be considered are subsists.
 The complement is given by
   A^c := X - A
 Clearly, we have that for all x<-X,
@@ -296,7 +296,7 @@ The powerset of the set X is
   2^X := {A|A\subset X}
 
 Exercise 4.23
-(\subset, 2^X) has the propeties of reflexivity, antisymmetry and transitivity, like (<=, R).
+(\subset, 2^X) has the properties of reflexivity, antisymmetry and transitivity, like (<=, R).
 The relation <= on R has linearity;
   \forall x,y \in R, x<=y or y<=x.
 Show that 2^X lacks this property.
@@ -341,7 +341,7 @@ and
 
  
 
-Example4.28
+Example.28
 
 Exercise 4.29 (Theorem 4.20)
 
