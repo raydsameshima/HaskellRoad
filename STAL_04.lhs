@@ -289,7 +289,7 @@ The complement is given by
 Clearly, we have that for all x<-X,
   x <- A^c <=> x \nin A
 
-Theorem 4.20
+Theorem 4.20 (complement)
 
 Symmetric Difference.
 A \oplus B := {x|x\in A \xor x\in B}
@@ -336,21 +336,44 @@ Show that there is a set A with the following properties:
   2. \forall sets B, if F \subset 2^B, then A \subset B.
 
 Proof.
-Take A:=2^(\cup F), then
+Take A:=\cup F, then
   \forall X(X \in F ==> X \subset \cup F)
-  <=> \forall X(X \in F ==> X \in 2^(\cup F))
-  <=> F \subset 2^(\cup F)
-and \forall set B, 
-  F \subset 2^B
-  <=> F 
+    <=> \forall X(X \in F ==> X \in 2^(\cup F))
+    <=> F \subset 2^(\cup F)
+and 
+  \forall x \in A := \cup F
+    <=> \exists X \in F s.t. x \in X
+now, if F \subset 2^B, then
+  x \in X \in F \subset 2^B,
+i.e. x \in X \subset B.
+Thus \forall x \in A => x \in B and
+  A \subset B.
 
- 
+Q.E.D.
 
-Example.28
+Remark
+If the index set 
+  I = \emptyset,
+then 
+  \cup_{i \in I} A_i = \emptyset
+  \cap_{i \in I} A_i = {the collection of all sets}
+Therefore, the second notation usually presupposes that I \neq \emptyset.
 
-Exercise 4.29 (Theorem 4.20)
+Example 4.28 (DeMorgan law)
+
+Exercise 4.29 (Theorem 4.20 (complement))
 
 Exercise 4.30
+  2^\emptyset = {\emptyset} "singleton"
+or more simply
+  2^{} = {{}}
 
+  2^(2^{}) = 2^{{}}
+           = {{}, {{}}}
+
+  2^(2^(2^{})) = 2^{{}, {{}}}
+               = {{}, {{}}, {{{}}}, {{},{{}}}}
+
+    
 Exercise 4.31
 
