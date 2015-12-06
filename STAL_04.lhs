@@ -340,7 +340,9 @@ Take A:=2^(\cup F), then
   \forall X(X \in F ==> X \subset \cup F)
   <=> \forall X(X \in F ==> X \in 2^(\cup F))
   <=> F \subset 2^(\cup F)
-and
+and \forall set B, 
+  F \subset 2^B
+  <=> F 
 
  
 
