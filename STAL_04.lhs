@@ -59,7 +59,8 @@ Enumeration.
 
 Abstraction.
   {x | p x}
-denotes the set of things x that have property p.
+denotes the set of things x that have property p:
+  a \in {x | p x} \equive p a \equive p a = True
 
 The abstraction notation binds the variable x:
   {x | p x} = {y | p y}
@@ -88,6 +89,7 @@ There is no set corresponding to the properties
   F(x) := there is no infinite sequence
           ... <- x2 <- x1 <- x0 = x
 
+Proof
 Assume the contrary that F is such a set, and assume F <- F.
 This implies an infinite sequence
   ... F <- F <- F <- F
@@ -132,7 +134,7 @@ taking
 ... there is no general test for checking whether a given procedure terminates for a particular input.
 The halting problem is undecidable.
 
-Collatz problem
+Collatz problem (sequence)
 
 > run :: Integer -> [Integer]
 > run n
@@ -148,6 +150,9 @@ We say that a procedure diverges when it does not terminate or when it aborts wi
 Stipulating divergence in Haskell is done by means of the predeclared function undefined, which causes an error abortion, just like error.
 In fact, Haskell has no way to distinguish between divergence and error abortion.
 
+"The halting problem is undecidable."
+
+Proof
 Suppose halts can be defined, then define the procedure funny
 
   funny x
@@ -319,8 +324,6 @@ Similarly, the translation of
   \cap F \subset \cup G
 becomes
   \forall x(\forall X(X \in F ==> x \in X)) ==> \exists Y(Y \in G && x \in Y)
-
-Q.E.D.
 
 Types of Generalized Union and Intersection
 Their type is
