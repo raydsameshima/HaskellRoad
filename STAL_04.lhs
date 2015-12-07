@@ -373,7 +373,52 @@ or more simply
 
   2^(2^(2^{})) = 2^{{}, {{}}}
                = {{}, {{}}, {{{}}}, {{},{{}}}}
+The number of 
+  (2^)^5({})
+is
+  2^5 = 32
 
-    
+  #(2^A) = 2^(#A)
+
 Exercise 4.31
+  A = B <=> 2^A = 2^B
+
+Proof
+(==>)
+  \forall U \in 2^A
+    <=> U \subset A = B
+    <=> U \in 2^B
+Therefore A=B ==> 2^A=2^B.
+
+(<==)
+Let us take \forall a \in A, i.e.,
+  {a} \in 2^A = 2^B 
+    <=> a \in B
+Therefore 2^A=2^B ==> A=B.
+
+Q.E.D.
+
+Exercise 4.32
+1. 2^(A \cap B) = 2^A \cap 2^B
+
+  \forall X \in 2^(A \cap B)
+    <=> X \subset (A \cap B)
+    <=> X \subset A && X \subset B
+    <=> X \in (2^A \cap 2^B)
+
+2.
+But if we change \cap -> \cup, then
+
+  \forall X \in 2^(A \cup B)
+    <=> X \subset (A \cup B)
+    <== X \subset A || X \subset B
+          <=> X \in (2^A \cup 2^B)
+
+i.e. 2^(A \cup B) \supset (2^A \cup 2^B)
+
+Q.E.D.
+
+Exercise 4.33
+
+Exercise 4.34
 
