@@ -421,4 +421,50 @@ Q.E.D.
 Exercise 4.33
 
 Exercise 4.34
+Any sequence of sets
+  A_0, A_1, ...
+with 
+  2^A_{i+1} \subset A_i
+is finite.
 
+Proof (Russel's set)
+Let us define
+  A_{i+1} <- A_i :<=> 2^A_{i+1} \subset A_i.
+Suppose there is an infinite sequence
+  ... <- A_2 <- A_1 <- A_0
+Then we can show that
+  2^{\cap_{i \in N} A_i} \subset \cap_{i \in N} A_i
+since for B := \cap_{i \in N} A_i,
+  2^B = 2^{\cap_{i \in N} A_i}
+      = {x| x \subset \cap_{i \in N} A_i} 
+      = {x| \forall x \in N, x \subset A_i}
+      \subset {x| \forall x \in N, x \subset A_{i+1}}
+      = {x| \forall x \in N, x \in 2^A_{i+1}}
+      \subset {x| \forall x \in N, x \in A_i}
+      = \cap_{i \in N} A_i
+      = B
+That is B has the following property:
+  2^B \subset B
+and we can construct the Russel set
+  { R\in B | R \nin R }
+This gives us a contradiction.
+
+Q.E.D.
+
+Exercise 4.35 (recursive definition)
+K :: the collection of sets with
+  \forall A \in K(A = \emptyset || \exists B \in K (A=2^B))
+then
+  \forall A \in K, \exists n \in N, A = power^n(B)
+
+Proof
+Since A is either \emptyset or the form of
+  2^B, B \in K,
+this B is also in K and B is also either \emptyset or 2^C, C \in K form.
+This procedure will terminate since we've prove it in Exercise 4.34, so at some point they will hit an \emptyset.
+Therefore
+  \forall A \in K, \exists n \in N, A = power^n(B)
+
+Q.E.D.
+ 
+4.5 Ordered Pairs and Products
