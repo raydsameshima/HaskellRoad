@@ -468,3 +468,46 @@ Therefore
 Q.E.D.
  
 4.5 Ordered Pairs and Products
+Ordered pairs behave according to the following rule:
+  (a,b) = (x,y) ==> a=x && b=y 
+
+Defining Ordered Pairs.
+  (a,b) := {{a},{a,b}}
+
+Definition 4.36 (Products)
+The (Cartesian) product of sets A and B is the
+  A \times B := {(a,b) | a \in A && b \in B}
+
+Example 4.37
+
+Theorem 4.38, 4.39
+
+Exercise 4.40
+
+Exercise 4.41
+
+Definition 4.42 (n-tuples over A)
+1. A^0 := {\emptyset}
+2. A^{n+1} := A \times A^n
+
+4.6 Lists and List Operation
+Assuming the list elements are all taken from a set A, the set of all lists over A is the set 
+  A^* := \cup_{n \in N} A^n
+For every list
+  L \in A^*
+there is some n \in N with
+  L \in A^n,
+and if L \in A^n, we say that list L has length n.
+
+In Haskell the data type of lists is (pre-)declared like
+  *STAL_04> :info []
+  data [] a = [] | a : [a]  -- Defined in ‘GHC.Types’
+and the equality of the lists is that of elements, i.e. extensionality:
+  instance Eq a => Eq [a] where
+    []     == []     = True
+    (x:xs) == (y:ys) = x==y && xs==ys
+    _      == _      = False
+
+Exercise 4.43
+
+
