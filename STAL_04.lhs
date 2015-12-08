@@ -500,14 +500,144 @@ there is some n \in N with
 and if L \in A^n, we say that list L has length n.
 
 In Haskell the data type of lists is (pre-)declared like
+
   *STAL_04> :info []
   data [] a = [] | a : [a]  -- Defined in ‘GHC.Types’
+
 and the equality of the lists is that of elements, i.e. extensionality:
+
   instance Eq a => Eq [a] where
     []     == []     = True
     (x:xs) == (y:ys) = x==y && xs==ys
     _      == _      = False
 
 Exercise 4.43
+How does it follow from this definition that lists of different length are unequal?
 
+Answer: Will hit the third case.
 
+A type of class Ord is a type on which the two-placed operation compare is defined, with a result of type Ordering.
+
+  *STAL_04> :info Ordering 
+  data Ordering = LT | EQ | GT  -- Defined in ‘GHC.Types’
+
+The following piece of Haskell code implements of compare:
+  
+  instance Ord a => Ord [a] where
+    compare [] (_:_) = LT
+    compare [] []    = EQ
+    compare (_:_) [] = GT
+    compare (x:xs) (y:ys) -- non-emptysets will hit here
+      = primCompAux x y (compare xs ys)
+
+    primCompAux :: Ord a => a -> a -> Ordering -> Ordering
+    primCompAux x y o =
+      case compare x y of EQ -> o;
+                          LT -> LT;
+                          GT -> GT
+
+Exercise 4.44
+Another ordering of lists is as follows: shorter lists come before longer ones, and for lists of the same length we compare their first elements, and if these are the same, the remainder lists.
+Give a formal definition of this ordering.
+
+> compare' :: Ord a => [a] -> [a] -> Ordering
+> compare' [] [] = EQ
+> compare' xx yy
+>   | length xx < length yy = LT
+>   | length xx > length yy = GT
+>   | otherwise             = compare xx yy
+
+Exercise 4.45
+
+> init' [x] = []
+> init' (x:xs) = x: init xs
+
+Exercise 4.46 (reverse)
+A naive implementation is the following:
+
+> myReverse :: [a] -> [a]
+> myReverse [] = []
+> myReverse (x:xs) = myReverse xs ++ [x]
+
+This is slow, and the Prelude's implementation is
+
+foldl (flip (:)) [] 
+
+Cool.
+
+Exercise 4.47
+Write a function splitList that gives all the ways to split a list of at least two element in two non-empty parts.
+
+> splitList' :: [a] -> [([a],[a])]
+> splitList' [] = error "give me non-empty list"
+> splitList' [x] = error "sorry, more elements" 
+> splitList' [x,y] = [([x],[y])]
+> -- splitList' (x:y:ys) = ([x],(y:ys)) : splitList' (y:ys)
+> splitList' (x:y:ys) = ([x],(y:ys)) : map (f x) splittedList
+>   where splittedList = splitList' (y:ys)
+>         f x (z,w) = (x:z,w)
+
+The basic idea is the same as the solution.
+
+An operation on lists that we will need in the next sections is the operation or removing duplicates.
+This is predefined in Haskell module as nub ("nub" means essence), but here is a home-made version
+
+> nub' :: (Eq a) => [a] -> [a]
+> nub' []     = []
+> nub' (x:xs) = x : nub (remove' x xs)
+>   where remove' y [] = []
+>         remove' y (z:zs) 
+>           | y == z    = remove' y zs
+>           | otherwise = z : remove' y zs
+
+4.7 List Comprehension and Database Query
+The database can be used to define the following lists of database objects, with list comprehension.
+Here db :: DB is the database list, where we have imported DB as
+  import DB
+on the top of this file.
+
+> characters = nub [x | ["play",_,_,x] <- db]
+> movies     =     [x | ["release",x,_] <- db]
+> actors     = nub [x | ["play",x,_,_] <- db]
+> directors  = nub [x | ["direct",x,_] <- db]
+> dates      = nub [x | ["release",_,x] <- db]
+> universe   = nub (characters ++ actors ++ directors ++ movies ++ dates)
+
+Next, define lists of tuples, again by list comprehension:
+
+> direct  = [(x,y) | ["direct",x,y] <- db]
+> act     = [(x,y) | ["play",x,y,_] <- db]
+> play    = [(x,y,z) | ["play",x,y,z] <- db]
+> release = [(x,y) | ["release",x,y] <- db]
+
+Finally, define one placed, two placed and three placed predicates by means of lambda abstraction.
+
+> charP = \x -> elem x characters
+> actorP = \x -> elem x actors
+> movieP = \x -> elem x movies
+> directorP = \x -> elem x directors
+> dataP = \x -> elem x dates
+> actP = \(x,y) -> (x,y) `elem` act
+> releaseP = \(x,y) -> (x,y) `elem` release
+> directP = \(x,y) -> (x,y) `elem` direct
+> playP = \(x,y,z) -> (x,y,z) `elem` play
+
+We start with some conjunctive queries.
+"Give me the actors that also are directors."
+
+> q1 = [x | x <- actors, directorP x]
+
+"Give me all actors that also are directors, together with the films in which they were acting."
+
+> q2 = [(x,y) | (x,y) <- act, directorP x]
+
+"Give me all directors together with their films and their release dates."
+The follwoing is wrong:
+
+> q3 = [(x,y,z) | (x,y) <- direct, (y,z) <- release] 
+
+The problem is that the two y's are unrelated.
+In fact, this query generates an infinite list.
+This can be remedied by using the equality predicate as a link:
+
+> q4 = [(x,y,z) | (x,y) <- direct, (u,z) <- release, y==u]
