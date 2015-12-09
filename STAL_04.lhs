@@ -641,3 +641,46 @@ In fact, this query generates an infinite list.
 This can be remedied by using the equality predicate as a link:
 
 > q4 = [(x,y,z) | (x,y) <- direct, (u,z) <- release, y==u]
+
+"Give me all directors of films released in 1995, together with these films."
+
+> q5 = [(x,y) | (x,y) <- direct, (u,"1995") <- release, y==u]
+
+"Give me all directors of films released after 1995, together with these films and their dates."
+
+> q6 = [(x,y,z) | (x,y) <- direct, (u,z) <- release, y==u, z>"1995"]
+
+"Give me the films in which Kevin Spacey acted."
+
+> q7 = [x | ("Kevin Spacey",x) <- act]
+
+"Give me all films released after 1997 in which William Hurt did act."
+
+> q8 = [x | (x,y) <- release, y > "1997", actP ("William Hurt",x)]
+
+Yes/no queries based on conjunctive querying: "Are these any films in which the director was also an actor?"
+
+> q9 = q1 /= []
+
+"Does the database contain films directed by Woody Allen?"
+
+> q10 = [x | ("Woody Allen",x) <- direct ] /= []
+> q10' = directorP "Woody Allen"
+
+Exercise 4.48
+"Give me the films in which Robert De Niro or Kevin Spacey acted."
+
+> q11 = [(x,y) | ["play",x,y,_] <- db, x == "Robert De Niro" || x== "Kevin Spacey"]
+
+Exercise 4.49
+"Give me all films with Quentin Tarantino as actor or director that appeared in 1994"
+
+> q12 = nub [title | ["play",y,title,_] <- db, ["direct",y,title] <- db, ["release",title,"1994"] <- db, y=="Quentin Tarantino"]
+
+Exercise 4.50
+"Give me all films released after 1997 in which William Hurt did not act."
+
+> q13 = [title | (title, year) <- release, year > "1997", not . actP $ ("William Hurt", title)]
+
+4.8 Using Lists to Represent Sets
+
