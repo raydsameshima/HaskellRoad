@@ -683,4 +683,34 @@ Exercise 4.50
 > q13 = [title | (title, year) <- release, year > "1997", not . actP $ ("William Hurt", title)]
 
 4.8 Using Lists to Represent Sets
+Sets are unordered, lists are ordered, but we can use lists to represent finite or countably infinite sets by representing sets as lists with duplicates removed, and by disregarding the order.
+
+To remove the first occurrence of the element from the list, delete function is built in Data.List.
+
+> delete' :: Eq a => a -> [a] -> [a]
+> delete' _ [] = []
+> delete' x (y:ys) 
+>   | x == y    = ys
+>   | otherwise = y : (delete x ys) 
+
+As we've seen, the operation of elem for finding elements is also built in.
+
+> isElem :: Eq a => a -> [a] -> Bool
+> _ `isElem` [] = False
+> x `isElem` (y:ys)
+>   | x == y    = True
+>   | otherwise = x `isElem` ys
+
+Further operations on sets that we need to implement are union, intersection and difference.
+These are all built in, the following are home-made versions.
+
+> union', intersect' :: Eq a => [a] -> [a] -> [a]
+> union' []     ys = ys
+> union' (x:xs) ys 
+>   = x : union xs (delete x ys) 
+
+> intersect' [] ys = []
+> intersect' (x:xs) ys
+>   | x `isElem` ys = x : intersect' xs ys
+>   | otherwise     = intersect' xs ys 
 
