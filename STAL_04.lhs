@@ -714,3 +714,37 @@ These are all built in, the following are home-made versions.
 >   | x `isElem` ys = x : intersect' xs ys
 >   | otherwise     = intersect' xs ys 
 
+Exercise 4.51
+The Haskell operation for list difference is predefined as (\\) in Data.List.
+  *STAL_04> [1,2,3] \\ [2,3,4]
+  [1]
+  *STAL_04> [1,2,3,5] \\ [2,3,4]
+  [1,5]
+  *STAL_04> [1,2,3,5] \\ [0,2,3,4]
+  [1,5]
+
+> difference :: Eq a => [a] -> [a] -> [a]
+> difference xs []     = xs 
+> difference xs (y:ys) = difference (delete' y xs) ys
+
+The predefined versions of the functions elem(isElem) and notElem(isNotElem) for testing whether an object occurs in a list, or not, use the function any and all:
+
+> isElem', isNotElem' :: Eq a => a -> [a] -> Bool
+> isElem'    = any . (==)
+> isNotElem' = all . (/=)
+
+Be cautions, they are ill-terminat functions.
+
+Let's turn to an operation for the list of all sublists of a given list.
+
+> addElem :: a -> [[a]] -> [[a]]
+> addElem x = map (x:)
+
+> powerList :: [a] -> [[a]]
+> powerList [] = [[]]
+> powerList (x:xs) = (powerList xs) ++ (map (x:) (powerList xs))
+
+E.g, 
+  filterM (\x -> [True, False])
+is also powerList function.
+
