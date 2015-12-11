@@ -748,3 +748,24 @@ E.g,
   filterM (\x -> [True, False])
 is also powerList function.
 
+The follwoing is from 
+https://www.reddit.com/r/programming/comments/225f0/beautiful_haskell_implementation_of_maths_power
+
+> powerList' :: [a] -> [[a]]
+> powerList' [] = [[]]
+> powerList' (x:xs) = do
+>   xxs <- powerList' xs
+>   [x:xxs, xxs]  
+
+This is the fold-version of above simple recursion:
+
+> powerList'' :: [a] -> [[a]]
+> powerList'' = foldr (\x xs -> xs ++ map (x:) xs) [[]]
+
+Examle 4.52
+Lists in Haskell is much less flexisble than set theory about types.
+
+Exercise 4.53
+Write genUnion and genIntersect for generalized list union and list intersection.
+  genUnion, genIntersect :: Eq a => [[a]] -> [a]
+
