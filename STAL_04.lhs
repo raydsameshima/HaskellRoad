@@ -6,6 +6,7 @@ Sets, Types and Lists
 > module STAL_04 where
 > import Data.List 
 > import DB
+> import SetEq
 
 4.1 Let's Talk About Sets
 There are several axiomatic approaches to set theory; the standard one is due to Zermelo and Frankel.
@@ -769,3 +770,65 @@ Exercise 4.53
 Write genUnion and genIntersect for generalized list union and list intersection.
   genUnion, genIntersect :: Eq a => [[a]] -> [a]
 
+genUnion :: Eq a => [[a]] -> [a]
+genUnion = foldl union' []
+
+This implementation is different from the solutions:
+
+genIntersect :: Eq a => [[a]] -> [a]
+genIntersect = foldl intersect []
+
+> genUnion :: Eq a => [[a]] -> [a]
+> genUnion [] = []
+> genUnion [xs] = xs
+> genUnion (xs:xss) = union xs (genUnion xss)
+
+> genIntersect :: Eq a => [[a]] -> [a]
+> genIntersect [] = error "list of lists should be non-empty"
+> genIntersect [xs] = xs
+> genIntersect (xs:xss) = intersect xs (genIntersect xss)
+
+Union behaves samely:
+
+*STAL_04> genUnion ["map", "aaaa", "aiueo"]
+"mapiueo"
+*STAL_04> foldl union' [] ["map", "aaaa", "aiueo"]
+"mapiueo"
+
+4.9 A Data Type for Sets
+A list representation of "sets": SetEq.hs.
+
+  *STAL_04> Set [1,2,3] == Set [3,2,1]
+  True
+  *STAL_04> Set [1..] == Set [1]
+  False
+  *STAL_04> Set [1,1..] == Set [1]
+  ^CInterrupted.
+  *STAL_04> Set [x | x <- [1,1,1,1,1]] == Set [1]
+  True
+
+But still have bad points.
+  *STAL_04> (Set $ powerList [1..3]) == (powerSet $ Set [1..3])
+  
+  <interactive>:30:30:
+  Couldn't match type ‘Set Integer’ with ‘[Integer]’
+  Expected type: Set [Integer]
+    Actual type: Set (Set Integer)
+  In the second argument of ‘(==)’, namely
+    ‘(powerSet $ Set [1 .. 3])’
+  In the expression:
+    (Set $ powerList [1 .. 3]) == (powerSet $ Set [1 .. 3])
+  In an equation for ‘it’:
+    it = (Set $ powerList [1 .. 3]) == (powerSet $ Set [1 .. 3])
+
+  *STAL_04> powerSet $ Set [1..3]
+  {{},{3},{2},{2,3},{1},{1,3},{1,2},{1,2,3}}
+  *STAL_04> Set $ powerList [1..3]
+  {[],[3],[2],[2,3],[1],[1,3],[1,2],[1,2,3]}
+  *STAL_04> :type powerSet $ Set [1..3]
+  powerSet $ Set [1..3] :: (Enum a, Eq a, Num a) => Set (Set a)
+  *STAL_04> :type Set $ powerList [1..3]
+  Set $ powerList [1..3] :: (Enum a, Num a) => Set [a]  
+
+Exercise 4.54 (unionSet, intersectSet, diffrenceSet)
+Exercise 4.55 (insertSet without duplicates)
