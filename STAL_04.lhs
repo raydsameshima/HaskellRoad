@@ -831,4 +831,60 @@ But still have bad points.
   Set $ powerList [1..3] :: (Enum a, Num a) => Set [a]  
 
 Exercise 4.54 (unionSet, intersectSet, diffrenceSet)
+
+> unionSet :: (Eq a) => Set a -> Set a -> Set a
+> -- if we use insertSet' (home-made) then we should use this type declaration
+> -- unionSet :: (Ord a) => Set a -> Set a -> Set a
+> unionSet (Set [])     set2 = set2 -- terminal condition
+> unionSet (Set (x:xs)) set2 = 
+>   insertSet x (unionSet (Set xs) (deleteSet x set2))
+> 
+> intersectSet :: (Eq a) => Set a -> Set a -> Set a
+> intersectSet (Set [])     set2 = set2
+> intersectSet (Set (x:xs)) set2
+>   | inSet x set2 = insertSet x (intersectSet (Set xs) set2)
+>   | otherwise    = intersectSet (Set xs) set2
+>
+> differenceSet :: (Eq a) => Set a -> Set a -> Set a
+> differenceSet set1 (Set [])     = set1
+> differenceSet set1 (Set (y:ys)) = 
+>   differenceSet (deleteSet y set1) (Set ys)
+
 Exercise 4.55 (insertSet without duplicates)
+
+> insertSet' :: (Ord a) => a -> Set a -> Set a
+> insertSet' x (Set s) = Set (insertList x s)
+>
+> insertList x [] = [x]
+> insertList x yys@(y:ys) = case compare x y of
+>   GT -> y : insertList x ys
+>   EQ -> yys
+>   _  -> x : yys
+
+Hierarchy
+The follwoing is the first five level of the set theoretic universe.
+
+> data S = Void deriving (Eq, Show)
+> empty :: Set S
+> empty = Set []
+> v0    = empty
+> v1    = powerSet v0
+> v2    = powerSet v1
+> v3    = powerSet v2
+> v4    = powerSet v3
+> v5    = powerSet v4
+
+  *STAL_04> v5
+    -- bunch of terms
+  (52.44 secs, 8,632,745,032 bytes)
+
+> display :: Int -> String -> IO ()
+> display n str = putStrLn (display' n 0 str)
+>   where display' _ _ [] = []
+>         display' n m (x:xs)
+>           | n == m    = '\n' : display' n 0 (x:xs)
+>           | otherwise = x : display' n (m+1) xs
+
+Exercise 4.56
+
+Exercise 4.57
