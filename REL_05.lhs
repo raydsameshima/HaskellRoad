@@ -29,9 +29,15 @@ and
   \emptyset
 are relations, especially \emptyset is called trivial relation.
     
+E.g.
+  dom(\emptyset) = \emptyset = cod(\emptyset)
+if B \neq \emptyset, then
+  dom(A \times B) = A
+  (dom(A \times \emptyset) = dom(\emptyset) = \emptyset)
+and if A \neq \emptyset, then
+  cod(A \times B) = B
 
-
-
+Definition 5.3 (From ... to, between, on)
 
 
 
