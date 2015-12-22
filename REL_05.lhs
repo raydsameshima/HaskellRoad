@@ -170,11 +170,82 @@ Example 5.16, 5.17 (irreflexive relations)
 
 Symmetric
 A relation R on A is symmetric if for all a,b \in A, aRb ==> bRa.
+That is
+  (\forall a,b \in A, aRb ==> bRa) ==> R is symmetric 
 
 Example 5.18 (having the same age)
 
+Exercise 5.19
+1. A relation R on a set A is symmetric iff
+  \forall x,y \in A (xRy <=> yRx)
+2. A relation R is symmetric iff 
+  R \subseteq R^{-1},
+3. iff
+  R = R^{-1}
 
+Proof
+1. 
+(==>) part is trivial. 
+(<==) part; if
+  \forall x,y \in A (xRy <=> yRx)
+then xRy and yRx, i.e., R is symmetric.
 
+2.
+(==>) part; if R is symmetric, 
+  aRb ==> bRa
+this means
+  if (a,b) \in R then (b,a) \in R
+and
+  (a,b) \in R ==> (b,a) \in R <=> (a,b) \in R^{-1}
+Thus 
+  \forall (a,b) \in R ==> (a,b) \in R^{-1}
+and
+  R \subseteq R^{-1}
+(<==) part; if R = R^{-1}, then
+  aRb <=> bRa
+and this shows R is symmetric.
 
+3. Similar to 2.
 
+Q.E.D.
+
+Asymmetric
+A relation R on A is asymmetric if for all x,y \in A, if xRy then not yRx.
+
+(<,N) is asymmetric.
+Immediately from the definition, a relation R on A is asymmetric iff
+  R \cap R^{-1} = \emptyset
+Note that there are relations which are neither symmetric nor asymmetric.
+
+Exercise 5.20
+Show that every asymmetric relation is irreflexive.
+
+Proof
+If R is asymmetric, 
+  xRy ==> not yRx
+this can be applied the case y==x, and then
+  xRx ==> not xRx
+i.e., R is not reflexive.
+
+Q.E.D.
+
+Antisymmetric
+A relation R on A is antisymmetric if for all x,y \in A, if xRy and yRx then x==y.
+
+Example 5.21
+The relation m|n (m is a divisor of n) on N is antisymmetric.
+If m is a divisor of n and n is a divisor of m, then m and n are equal.
+
+The relation (<=,N) in example 5.15 is antisymmetric.
+
+Example 5.22
+Show from the definitions that an asymmetric relation always is antisymmetric.
+
+Proof
+If R is asymmetric,
+  xRy ==> not yRx.
+Thus, if x /= y and (xRy and yRx), then
+  (not xRy) and (not yRx)
+holds but this contradicts (xRy and yRx).
+Therefore we have x == y.
 
