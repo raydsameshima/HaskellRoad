@@ -39,7 +39,7 @@ Suppose ld(n) is NOT prime, then there are natural numbers a,b >1  s.t.
 Then clearly,
   1 < a,b < ld(n),
 and a, b divide n.
-Since we define ld(n) is the smallest divisor of n, with ld(n)>1.
+Since we define ld(n) is the smallest divisor of n, with ld(n)>1, we have a contradiction.
 Thus ld(n) must be a prime number.
 
 2. Suppose n>1 and n is not prime.
@@ -54,9 +54,9 @@ Therefore,
 Q.E.D.
 
 Note; for later convenience,
-  if n>1:: non prime, then (ld(n))^2 <= n,
+  if n>1 is not a prime, then (ld(n))^2 <= n,
 is equivalent to its contraposition:
-  if (ld(n))^2 > n, then n>1 :: prime.
+  if (ld(n))^2 > n, then n>1 is a prime.
      
 m divides n <=> the remainder of the process of dividing n by m equals 0:
 
@@ -65,11 +65,10 @@ m divides n <=> the remainder of the process of dividing n by m equals 0:
 
 It is convenient to define ld function in terms of a helper ldf, for the least divisor starting from a given threshold k <= n.
 
-{-
-Thus
-  ldf(k)(n)
-is the least divisor of n and ld(k)(n) >= k.
--}
+-- Thus
+--   ldf(k)(n)
+-- is the least divisor of n and ld(k)(n) >= k.
+
 "Thus, ldf(k)(n) is the least divisor of n, provided n has no divisors <k."
 
 > ld :: Integer -> Integer
@@ -93,6 +92,11 @@ The follwing is our first implementation of the test for being a prime number:
 
   *GS_01> filter prime0 [1..100]
   [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]
+
+  *GS_01> take 10000 $ filter prime0 [1..]
+  ...
+  (12.95 secs, 2,754,591,928 bytes)
+
 
 1.3 Haskell Type Declarations
 type class (Integral)
