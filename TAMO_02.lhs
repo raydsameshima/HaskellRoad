@@ -265,7 +265,7 @@ Theorem 2 12
   True
 
 Substitution Principle:
-Just a dummy.
+Just a dummy, or alpha equivalence.
 
 Example 2.14
 p := not p
@@ -298,7 +298,7 @@ Show:
 
 Proof
 Think about the truth table of the formula (\Psi <=> \Phi).
-Taking not flip True and False, but does not change (not \Phi <=> not \Psi).
+Taking not will flip the position of True and False, but this does not change the boolean value of (not \Phi <=> not \Psi).
 
 Q.E.D.
 
@@ -341,7 +341,7 @@ Exercise 2.20
   *TAMO_02> f `logEquiv2` g
   True
 
-7,
+7.
   *TAMO_02> let f = \p q r -> (p || q) ==> r
   *TAMO_02> let g = \p q r -> (p ==> r) && (q ==> r)
   *TAMO_02> f `logEquiv3` g
@@ -414,10 +414,12 @@ The solution formula of quadratic equations:
 
 > solveQdr :: (Float, Float, Float) -> (Float, Float)
 > solveQdr = \(a,b,c) ->
->   if a == 0 then error "not quadratic, give me non zero a!"
->             else let d = b^2 - 4*a*c 
->                  in  if d<0 then error "no real solutions"
->                             else ((-b-sqrt d)/(2*a), (-b+sqrt d)/(2*a))
+>   if a == 0 
+>     then error "not quadratic, give me non zero a!"
+>     else let d = b^2 - 4*a*c 
+>          in  if d<0 
+>                then error "no real solutions"
+>                else ((-b-sqrt d)/(2*a), (-b+sqrt d)/(2*a))
 
 2.5 Definitions and Implementations
 A natural number n is prime if n>1 and no number m with 1<m<n divides n:
@@ -599,6 +601,7 @@ In Haskell, they are predefined as all and any:
 
 > any', all' :: (a -> Bool) -> [a] -> Bool
 > all' p = and . map p 
+> -- all' p lst = and . map p lst
 > any' p = or . map p
 
 Note
