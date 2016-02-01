@@ -242,10 +242,19 @@ Example 5.22
 Show from the definitions that an asymmetric relation always is antisymmetric.
 
 Proof
-If R is asymmetric,
+If R is asymmetric, we have
   xRy ==> not yRx.
-Thus, if x /= y and (xRy and yRx), then
+Thus, if we assume x /= y and (xRy and yRx), then
   (not xRy) and (not yRx)
-holds but this contradicts (xRy and yRx).
+holds but this contradicts our assumption (xRy and yRx).
 Therefore we have x == y.
 
+Q.E.D.
+
+Transitive
+A relation R on A is transitive if for all x,y,z \in A:
+  if xRy and yRz then xRz.
+
+Exercise 5.23
+Show that R on A is transitive iff
+  \forall x,z \in A (\exists y \in A (xRy \land yRz) ==> xRz)
