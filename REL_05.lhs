@@ -258,3 +258,22 @@ A relation R on A is transitive if for all x,y,z \in A:
 Exercise 5.23
 Show that R on A is transitive iff
   \forall x,z \in A (\exists y \in A (xRy \land yRz) ==> xRz)
+
+Proof
+
+Example 5.24
+
+Pre-order (or quasi-order)
+R on A is a pre-order (or quasi-order) if R is transitive and reflexive.
+
+Example 5.25 (\vDash)
+Let L be the set of all propositional formulas built from a given set of atomic propositions.
+Then the relation \vDash given by
+  P \vDash Q iff P ==> Q is logically valid
+is a pre-order on L.
+
+To check this, note that for every propositional formula P,
+  P ==> P
+is logically valid, so \vDash is reflexive.
+
+
