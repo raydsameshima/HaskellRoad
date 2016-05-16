@@ -13,7 +13,7 @@ Definition 5.1 (Relation, Domain, Range = Codomain)
 A relation is a set of ordered pairs.
 Instead of 
   (x,y) \in R
-where R is a relation, we usually write
+where R is a relation, we usually write it as
   xRy.
 
 The set
@@ -118,8 +118,14 @@ Also, here are the list of divisors of a natural number, the list of all proper 
 > divs n = (fst list) ++ reverse (snd list)
 >   where list = unzip (divisors n)
 
+> divs' :: Integer -> [Integer]
+> divs' n = smaller ++ larger
+>   where 
+>     (smaller, rLarger) = unzip (divisors n)
+>     larger = reverse rLarger
+
 > properDivs :: Integer -> [Integer]
-> properDivs n = init (divs n)
+> properDivs n = init (divs' n)
 
 > perfect :: Integer -> Bool
 > perfect n = sum (properDivs n) == n
@@ -143,6 +149,9 @@ where
   False
   *REL> perfect 6
   True
+  
+  *REL> filter perfect [1..100000]
+  [1,6,28,496,8128]
 
 Exercise 5.13
 Show that 
@@ -166,7 +175,14 @@ In other words, a relation R is reflexive on A iff 1_A \subset R.
 Example 5.15
 The relation <= on N is reflexive (for every natural number is less than or equal to itself).
 
-Example 5.16, 5.17 (irreflexive relations)
+Irreflexive
+A relation R on A is irreflexive if for no x \in A, xRx.
+
+Example 5.16 (irreflexive relations)
+E.q., (N, <) is irreflexive.
+
+Example 5.17 (irreflexive relations)
+A relation IR is irreflexive iff \Delta_A \cap IR = \emptyset.
 
 Symmetric
 A relation R on A is symmetric if for all a,b \in A, aRb ==> bRa.
@@ -210,7 +226,8 @@ and this shows R is symmetric.
 Q.E.D.
 
 Asymmetric
-A relation R on A is asymmetric if for all x,y \in A, if xRy then not yRx.
+A relation R on A is asymmetric if for all x,y \in A, if xRy then not yRx:
+  xRy ==> not yRx.
 
 (<,N) is asymmetric.
 Immediately from the definition, a relation R on A is asymmetric iff
@@ -223,30 +240,35 @@ Show that every asymmetric relation is irreflexive.
 Proof
 If R is asymmetric, 
   xRy ==> not yRx
-this can be applied the case y==x, and then
+this can be applied for the case of y==x, and then
   xRx ==> not xRx
 i.e., R is not reflexive.
 
 Q.E.D.
 
 Antisymmetric
-A relation R on A is antisymmetric if for all x,y \in A, if xRy and yRx then x==y.
+A relation R on A is antisymmetric if for all x,y \in A, if xRy and yRx then x==y:
+  xRy and yRx ==> x==y.
 
 Example 5.21
 The relation m|n (m is a divisor of n) on N is antisymmetric.
 If m is a divisor of n and n is a divisor of m, then m and n are equal.
 
 The relation (<=,N) in example 5.15 is antisymmetric.
+  n <= m <= n ==> m==n
 
 Example 5.22
-Show from the definitions that an asymmetric relation always is antisymmetric.
+Show from the definitions that an asymmetric relation R
+  xRy ==> not yRx
+always is antisymmetric
+  xRy and yRx ==> x==y.
 
 Proof
 If R is asymmetric, we have
   xRy ==> not yRx.
-Thus, if we assume x /= y and (xRy and yRx), then
-  (not xRy) and (not yRx)
-holds but this contradicts our assumption (xRy and yRx).
+Thus, if we assume x /= y, then
+  (xRy and yRx) ==> (not xRy) and (not yRx)
+holds but this contradicts the if statement: (xRy and yRx).
 Therefore we have x == y.
 
 Q.E.D.
@@ -255,7 +277,7 @@ Transitive
 A relation R on A is transitive if for all x,y,z \in A:
   if xRy and yRz then xRz.
 
-Exercise 5.23
+? Exercise 5.23
 Show that R on A is transitive iff
   \forall x,z \in A (\exists y \in A (xRy \land yRz) ==> xRz)
 
@@ -264,9 +286,11 @@ Proof
 Example 5.24
 
 Pre-order (or quasi-order)
-R on A is a pre-order (or quasi-order) if R is transitive and reflexive.
+R on A is a pre-order (or quasi-order) if R is transitive and reflexive:
+  xRy, yRz ==> xRz
+  xRx
 
-Example 5.25 (\vDash)
+? Example 5.25 (\vDash)
 Let L be the set of all propositional formulas built from a given set of atomic propositions.
 Then the relation \vDash given by
   P \vDash Q iff P ==> Q is logically valid
@@ -276,4 +300,136 @@ To check this, note that for every propositional formula P,
   P ==> P
 is logically valid, so \vDash is reflexive.
 
+? Example 5.26
 
+Strict partial order
+A relation R on A is a strict partial order if R is transitive and irreflexive.
+  xRy, yRz ==> xRz
+  no x \in A, xRx
+
+Partial order
+A relation R on A is a partial order if R is transitive, reflexive and antisymmetric:
+  xRy, yRz ==> xRz
+  xRx
+  xRy, yRx ==> x==y
+
+Example 5.27 (N, <) and (2^A, \subset)
+
+Exercise 5.28
+Show that every strict partial order is asymmetric.
+
+Proof
+An strict partial order is transitive and irreflexive.
+An irreflexive R satisfies
+  no x \in A, xRx.
+If x,y \in A satify
+  xRy and yRx,
+then from the transitive property, 
+  x==y
+but it contradicts irreflexive property.
+So
+  not (xRy and yRx) \equive (not xRy) or (not yRx),
+i.e., R is asymmetric.
+
+Q.E.D.
+
+Exercise 5.29
+Show that every relation which is transitive and asymmetric is a strict partial order.
+
+Proof
+An asymmetric R satisfies
+  xRy ==> not yRx
+Therefore, if there were x \in A satisfies xRx, then
+  xRx ==> not xRx
+holds, and it clearly contradicts.
+Thus 
+  no x \in A, xRx,
+i.e., R is irreflexive, and a strict partial order.
+
+Q.E.D.
+
+Exercise 5.30
+If R is a strict partial order on A, then
+  R \cup \Delta_A
+is a partial order on A.
+
+Exercise 5.31
+Show that the inverse of a partial order is again a partial order.
+
+Proof
+For an arbitrary partial order R,
+  R = {(x,y) | xRy}
+with
+  xRy and yRz ==> xRz
+  xRx
+  xRy and yRx ==> x==y
+Thus, the inverse
+  S := R^{-1} 
+     = {(y,x) | xRy}
+satisfies
+  ySx and zSy <=> zSy and ySx 
+              ==> zSx
+  xSx
+  ySx and xSy ==> y==x
+so, S = R^{-1} is also a partial order.
+
+Q.E.D.
+
+Linear (or total) order, chain
+A relation R on A is linear if for all x,y \in A is "comparable":
+  xRy, yRx or x==y.
+
+All Haskell type in class 
+  Ord a
+are total orders.
+
+A set A with a total order on it is called a chain.
+
+Exercise 5.32 (Trees)
+Let S be a reflexive (xSx) and symmetric (xRy ==> yRx) relation on A.
+A path is a finite sequence
+  a_1 S a_2 S ... S a_n
+
+Assume that for all a,b \in A, there exists a unique path connecting a with b.
+
+Fix r \in A, and define
+  a<=b iff a is one of elements in the path connecting r with b.
+
+This <= is reflexive(a<=a), since there is a trivial path (on A)
+  aSa. 
+
+This <= is antisymmetric, since if a<=b and b<=a, i.e.,
+  r S .. S a S .. S a_i S .. S b and r S .. b S .. S b_j S .. S a 
+there are some sequences {a_i} and {b_j} from r.
+The uniqueness implies these two sequence are identical and 
+  a==b.
+
+This <= is transitive, since if a<=b<=c, then we have a sequence
+  r S .. S a S .. S b S .. S c
+That is,
+  a<=c.
+
+For all a \in A, r <= a, since we have assumed there is a unique path between any two elements in A, so
+  r S .. S .. S a <=> r <= a.
+
+For all a \in A, the set
+  X_a = {x \in A | x <= a}
+is finite and if b,c \in X_a then b <= c or c <= b.
+Since there is a unique path
+  r S .. S a.
+So the set X_a is determined by the unique path
+  X_a = {a_i | .. S a_i S .. S a}
+If this unique path is infinite, it contradicts the uniqueness of the paths.Therefore this set is
+  X_a = {a_i | a_n S .. S a_i S .. S a}
+Thus for all b,c \in X_a, either
+  b S .. S c
+or
+  c S .. S b
+is the sub path of X_a.
+
+Q.E.D.
+
+
+
+
+  
