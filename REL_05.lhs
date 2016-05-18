@@ -429,6 +429,28 @@ is the sub path of X_a.
 
 Q.E.D.
 
+Exercise 5.33
+
+Definition 5.34
+If O is a set of properties of relations on a set A, then the O-closure of a relation R is the smallest relation S that includes R and that has all the properties in O.
+That is, R has the properties in O, and for all S that has all the properties in O,
+  R \subseteq S.
+
+Exercise 5.36
+Let R be a transitive binary relation on A.
+Does it follow from the transitivity of R that its symmetric reflexive closure
+  S := R \cup R^{-1} \cup \Delta_A
+is also transitive?
+
+It does NOT.
+Consider 
+  A := {1,2,3}
+  R := {(1,2), (1,3)}
+then R is transitive, but
+  S := {(1,2), (1,3), (2,1), (3,1), (1,1), (2,2), (3,3)}
+So, (2,1) and (1,3) are in S, but (2,3) is not.
+That is, even if R is transitive, the symmetric reflexive closure may not be transitive.
+
 
 
 
