@@ -430,6 +430,14 @@ is the sub path of X_a.
 Q.E.D.
 
 Exercise 5.33
+(N,<) : irreflexive, asymmetric, transitive, linear.
+(N,<=) : reflexive, antisymmetric, transitive, linear.
+(N,successor) : irreflexive, asymmetric, intransitive.
+(N,divisor) : reflexive, antisymmetric, transitive.
+(N,coprime) : irreflexive, symmetric, 
+
+> isCoprime :: Integral a => a -> a -> Bool
+> isCoprime m n = (gcd m n == 1)
 
 Definition 5.34
 If O is a set of properties of relations on a set A, then the O-closure of a relation R is the smallest relation S that includes R and that has all the properties in O.
@@ -446,12 +454,12 @@ It does NOT.
 Consider 
   A := {1,2,3}
   R := {(1,2), (1,3)}
-then R is transitive, but
+then R is transitive, but its symmetric reflexive closure is
   S := {(1,2), (1,3), (2,1), (3,1), (1,1), (2,2), (3,3)}
 So, (2,1) and (1,3) are in S, but (2,3) is not.
 That is, even if R is transitive, the symmetric reflexive closure may not be transitive.
 
+Q.E.D.
 
 
 
-  

@@ -1,4 +1,5 @@
 -- SetEq.hs
+-- A moudule for sets as unordered lists without duplicates.
 -- http://homepages.cwi.nl/~jve/HR/
 
 module SetEq (Set(..), 

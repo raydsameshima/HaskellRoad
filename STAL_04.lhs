@@ -85,7 +85,7 @@ Example 4.5 (The Russel Paradox)
 We do NOT have to be afraid for this kind of paradoxes; if we restrict ourselves to forming sets on the basis of a previously given set:
   { x \in A | p x }
 
-Example 4.6
+Example 4.6(Well-founded property)
 There is no set corresponding to the properties
   F(x) := there is no infinite sequence
           ... <- x2 <- x1 <- x0 = x
