@@ -586,16 +586,25 @@ This is predefined in Haskell module as nub ("nub" means essence), but here is a
 > nub' :: (Eq a) => [a] -> [a]
 > nub' []     = []
 > nub' (x:xs) = x : nub (remove' x xs)
->   where remove' y [] = []
->         remove' y (z:zs) 
->           | y == z    = remove' y zs
->           | otherwise = z : remove' y zs
+>   where 
+>     remove' y [] = []
+>     remove' y (z:zs) 
+>       | y == z    = remove' y zs
+>       | otherwise = z : remove' y zs
 
 4.7 List Comprehension and Database Query
 The database can be used to define the following lists of database objects, with list comprehension.
 Here db :: DB is the database list, where we have imported DB as
   import DB
-on the top of this file.
+on the top of this file:
+
+> -- type WordList = [String]
+> -- type DB       = [WordList]
+> -- 
+> -- db :: DB
+> -- db = [ 
+> --   ["character", "Romeo"],
+> -- ...
 
 > characters = nub [x | ["play",_,_,x] <- db]
 > movies     =     [x | ["release",x,_] <- db]
@@ -641,7 +650,7 @@ The problem is that the two y's are unrelated.
 In fact, this query generates an infinite list.
 This can be remedied by using the equality predicate as a link:
 
-> q4 = [(x,y,z) | (x,y) <- direct, (u,z) <- release, y==u]
+> q4 = [(x,y,z) | (x,y) <- direct, (y',z) <- release, y==y']
 
 "Give me all directors of films released in 1995, together with these films."
 
@@ -683,7 +692,7 @@ Exercise 4.50
 
 > q13 = [title | (title, year) <- release, year > "1997", not . actP $ ("William Hurt", title)]
 
-4.8 Using Lists to Represent Sets
+4.8 Using Lists to Represent Sets (as lists with no-duplications)
 Sets are unordered, lists are ordered, but we can use lists to represent finite or countably infinite sets by representing sets as lists with duplicates removed, and by disregarding the order.
 
 To remove the first occurrence of the element from the list, delete function is built in Data.List.

@@ -6,7 +6,8 @@ type WordList = [String]
 type DB       = [WordList]
  
 db :: DB
-db = [
+db = [ 
+-- characters
  ["character", "Romeo"],
  ["character", "Jack Dawson"],
  ["character", "Sean McGuire"],
@@ -90,6 +91,7 @@ db = [
  ["character", "Chris"],
  ["character", "Big Harold"],
  ["character", "Sgt. Barnes"],
+-- movie titles
  ["movie", "Apocalypse Now"],
  ["movie", "The Untouchables"],
  ["movie", "Men in Black"],
@@ -123,6 +125,7 @@ db = [
  ["movie", "Highlander"],
  ["movie", "Wall Street"],
  ["movie", "Platoon"],
+-- actors
  ["actor", "Andy Garcia"],
  ["actor", "Sean Connery"],
  ["actor", "Kevin Costner"],
@@ -186,6 +189,7 @@ db = [
  ["actor", "Michael Douglas"],
  ["actor", "Forest Whitaker"],
  ["actor", "Tom Berenger"],
+-- directors
  ["director", "Andrew Niccol"],
  ["director", "Barry Sonnenfeld"],
  ["director", "Andrew Davis"],
@@ -210,6 +214,7 @@ db = [
  ["director", "Terry Gilliam"],
  ["director", "Russell Mulcahy"],
  ["director", "Oliver Stone"],
+-- titles and date
  ["release", "Blade Runner", "1982"],
  ["release", "Alien", "1979"],
  ["release", "Aliens", "1986"],
@@ -244,6 +249,7 @@ db = [
  ["release", "Wall Street", "1987"],
  ["release", "Platoon", "1986"],
  ["release", "The Truman Show", "1998"],
+-- directors and titles
  ["direct", "Brian De Palma", "The Untouchables"],
  ["direct", "James Cameron", "Titanic"],
  ["direct", "James Cameron", "Aliens"],
@@ -277,6 +283,7 @@ db = [
  ["direct", "Francis Ford Coppola", "Apocalypse Now"],
  ["direct", "Oliver Stone", "Wall Street"],
  ["direct", "Oliver Stone", "Platoon"],
+-- play
  ["play", "Leonardo DiCaprio", "Romeo and Juliet", "Romeo"],
  ["play", "Leonardo DiCaprio", "Titanic", "Jack Dawson"],
  ["play", "Robin Williams", "Good Will Hunting", "Sean McGuire"],
@@ -362,4 +369,5 @@ db = [
  ["play", "Martin Sheen", "Wall Street", "Carl Fox"],
  ["play", "Charlie Sheen", "Platoon", "Chris"],
  ["play", "Forest Whitaker", "Platoon", "Big Haplayd"],
- ["play", "Tom Berenger", "Platoon", "Sgt. Barnes"]]
+ ["play", "Tom Berenger", "Platoon", "Sgt. Barnes"]
+ ]
