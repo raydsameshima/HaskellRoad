@@ -434,7 +434,7 @@ Exercise 5.33
 (N,<=) : reflexive, antisymmetric, transitive, linear.
 (N,successor) : irreflexive, asymmetric, intransitive.
 (N,divisor) : reflexive, antisymmetric, transitive.
-(N,coprime) : irreflexive, symmetric, 
+(N,coprime) : symmetric.
 
 > isCoprime :: Integral a => a -> a -> Bool
 > isCoprime m n = (gcd m n == 1)
@@ -443,6 +443,51 @@ Definition 5.34
 If O is a set of properties of relations on a set A, then the O-closure of a relation R is the smallest relation S that includes R and that has all the properties in O.
 That is, R has the properties in O, and for all S that has all the properties in O,
   R \subseteq S.
+
+Exercise 5.35
+Suppose that R is a relation on A.
+Then R \cup \Delta_A is the reflexive closure and R \cup R^{-1} is the symmetric closure of R.
+
+First, we shall show that 
+  R_r := R \cup \Delta_A 
+is reflexive.
+For arbitrary a \in A, since (a,a) \in \Delta_A,
+  a R_r a
+holds, i.e., R_r is reflexive.
+
+Next we shall prove R_r is the smallest reflexive relation which includes R.
+Suppose S to be an arbitrary reflexive on A and include R:
+  R \subseteq S.
+Take an arbitrary pair (a,b) \in R_r = R \cup \Delta_A:
+  a R_r b.
+If a R b, then 
+  a S b
+holds since R \subseteq S.
+Else if a \Delta_A b, i.e., a==b, then the reflexivity of S implies
+  a S b==a.
+Therefore,
+  a R_r b ==> a S b
+and  
+  R_r \subseteq S.
+
+Similarly, put
+  R_s := R \cup R^{-1}.
+If (a,b) \in R, then (b,a) \in R^{-1}, and this means R_s is symmetric.
+
+Suppose S to be an arbitrary symmetric relation on A which includes R:
+  R \subseteq S.
+Then consider an arbitrary pair (a,b) \in R_t, then either
+  a R b 
+or
+  b R a.
+Therefore, in either cases, 
+  a S b
+holds since R \subseteq S.
+So
+  R_t \subseteq S
+and this means R_t is the symmetric closure of R.
+
+Q.E.D.
 
 Exercise 5.36
 Let R be a transitive binary relation on A.
@@ -461,5 +506,41 @@ That is, even if R is transitive, the symmetric reflexive closure may not be tra
 
 Q.E.D.
 
+Example 5.37
+The sequence of commands
+  C1; C2 
+is pronounced as execute C1, then C2.
+So if the meaning of command C1 is R and C2 is S, then
+  C1; C2 ~ S \circ S.
+
+Example 5.38(father of, brother of, and parent of)
+
+Exercise 5.39
+Consider the relation
+  R := {(0,2), (0,3), (1,0), (1,3), (2,0), (2,3)}
+on the set
+  A := {0,1,2,3,4}
+
+Then
+  R^2 = {(0,0), (0,3), (1,2), (1,3), (2,2), (2,3)}
+  R^3 = {(0,2), (0,3), (1,0), (1,3), (2,0), (2,3)}
+      = R
+  R^4 = R^2
+
+From these results,
+  R \cup R^2
+is a good candidate for S in
+  R \cup (S \circ R) = S.
+
+Q.E.D.
+
+Exercise 5.40
+A relation R on A is transitive iff R^2 \subseteq R.
+
+Exercise 5.41(associativity and inverse)
+
+We will show that for any relation R on A, the relation
+  R^+ := \cup_{n \geq 1} R^n
+is the transitive closure of R.
 
 
