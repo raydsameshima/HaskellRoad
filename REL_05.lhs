@@ -539,8 +539,86 @@ A relation R on A is transitive iff R^2 \subseteq R.
 
 Exercise 5.41(associativity and inverse)
 
+Proposition 5.42
+Transitive closure
 We will show that for any relation R on A, the relation
   R^+ := \cup_{n \geq 1} R^n
 is the transitive closure of R.
+
+Take arbitrary x,y,z in A s.t.
+  x R^+ y, y R^+ z,
+that is, there are some m,n \in N s.t.
+  x R^m y, y R^n z,
+and these two conditions implies that
+  x R^m \circ R^n z <=> x R^{m+n} z.
+Therefore R^+ is transitive:
+  x R^+ y, y R^+ z ==> x R^+ z
+
+Next, we shall show that R^+ is the smallest transitive relation which contains R.
+Consider an arbitrary trasitive S in A that include R:
+  R \subseteq S
+For an arbitrary pair in R
+  (a,b) \in R <=> a R b,
+since we have assumed R \subseteq S,
+  a S b.
+Assuming n>=1,(a,b) \in R^n, and
+  R^n \subseteq S,
+then consider 
+  (x,y) \in R^{n+1}.
+Since
+  R^{n+1} = R^n \circ R
+and
+  x R^{n+1} y :<=> \exists z \in A, (x R^n z, z R y)
+Now for this z,
+  x S z, z S y
+and by the transitivity of S,
+  x S y
+i.e.,
+  R^{n+1} \subseteq S.
+
+Q.E.D.
+
+Example 5.43
+If A = {a, {b, {c}}}, then
+  a \in^+ A, {b, {c}} \in^+, .. , c \in^+ A.
+
+Example 5.44
+  (parents of)^+ = ancestor of
+  (child of)^+   = descendant of 
+
+Example 5.45
+The relation < on N is the transitive closure of (N, suc):
+  suc^+ = <
+
+Exercise 5.46
+For a relation R on A, 
+  R^+ \cup \Delta_A
+is the reflexive transitive closure of R.
+
+Proof
+Consider an arbitrary reflexive transitive S which include R:
+  R \subseteq S,
+and take an arbitrary pair
+  (a,b) \in (R^+ \cup \Delta_A)
+Then either
+  a R^+ b
+or
+  a==b.
+If a R^+ b, then by the result of 4.42,
+  (a,b) \in R^+, R \subseteq S ==> R^+ \subseteq S
+and since S is also reflexive, i.e.,
+  \Delta_A \subseteq S
+so R^+ \cup \Delta_A \subseteq S.
+Else if b==a, then (a,b==a) \in S, since S is reflexive.
+
+Therefore
+  R^+ \cup \Delta_A \subseteq S
+
+Q.E.D.  
+
+Ancestral 
+The reflexive transitive closure of a relation R is often called the ancestral of R,
+  R^*
+Note that R^* is a pre order.
 
 
