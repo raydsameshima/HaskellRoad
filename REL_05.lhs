@@ -439,6 +439,11 @@ Exercise 5.33
 > isCoprime :: Integral a => a -> a -> Bool
 > isCoprime m n = (gcd m n == 1)
 
+Note that the (N,coprime) relation is not irreflexive, for 
+
+  *REL> isCoprime 1 1
+  True
+
 Definition 5.34
 If O is a set of properties of relations on a set A, then the O-closure of a relation R is the smallest relation S that includes R and that has all the properties in O.
 That is, R has the properties in O, and for all S that has all the properties in O,
@@ -619,6 +624,86 @@ Q.E.D.
 Ancestral 
 The reflexive transitive closure of a relation R is often called the ancestral of R,
   R^*
-Note that R^* is a pre order.
+Note that R^* is a pre order, since R^* is, by definition, is reflexive and transitive.
 
+Exercise 5.47
+Give the reflexive transitive closure of
+  R := {(n,n+1) | n \in N}.
 
+  R^* = <= (reflexive and transitive)
+
+? Exercise 5.48
+
+? Exercise 5.49
+
+? Exercise 5.50
+
+5.3 Implementing Relations as Sets of Pairs
+Define relations over a type a as sets of pairs:
+
+> type Rel a = Set (a,a)
+>
+> domR, ranR :: Ord a => Rel a -> Set a
+> domR (Set r) = list2set [x | (x,_) <- r]
+> ranR (Set r) = list2set [y | (_,y) <- r]
+
+Identity relation over a is
+
+> idR :: Ord a => Set a -> Rel a
+> idR (Set xs) = Set [(x,x) | x <- xs]
+
+The total relation is
+
+> totalR :: Set a -> Rel a
+> totalR (Set xs) = Set [(x,y) | x <- xs, y <- xs]
+
+Given relation, its inverse is
+
+> invR :: Ord a => Rel a -> Rel a
+> invR (Set []) = (Set [])
+> invR (Set ((x,y):r)) = insertSet (y,x) (invR (Set r))
+
+...Maybe we can also write this invR with foldr.
+
+  *REL> :t foldr insertSet emptySet
+  foldr insertSet emptySet :: (Ord a, Foldable t) => t a -> Set a
+
+> inR :: Ord a => Rel a -> (a,a) -> Bool
+> inR r (x,y) = inSet (x,y) r
+
+The complement of a relation:
+
+> complR :: Ord a => Set a -> Rel a -> Rel a
+> complR (Set xs) r =
+>   Set [(x,y) | x <- xs, y <- xs, not (inR r (x,y))]
+
+A check for reflexivity:
+
+> reflR, irreflR :: Ord a => Set a -> Rel a -> Bool
+> reflR set r = subSet (idR set) r
+> irreflR (Set xs) r =
+>   all (\pair -> not (inR r pair)) [(x,x) | x <- xs]
+
+A check for symmetry:
+
+> symR :: Ord a => Rel a -> Bool
+> symR (Set []) = True
+> symR (Set ((x,y):pairs))
+>   | x == y    = symR (Set pairs)
+>   | otherwise = inSet (y,x) (Set pairs)
+>                 && symR (deleteSet (y,x) (Set pairs)) 
+
+A check for transitivity:
+
+> transR emptySet = True
+> transR (Set s) = and [trans pair (Set s) | pair <- s]
+>   where
+>     trans (x,y) (Set r) = and [inSet (x,v) (Set r) | (u,v) <- r, u==y]
+
+Composition:
+
+> composePair :: Ord a => (a,a) -> Rel a -> Rel a
+> composePair (x,y) emptySet = emptySet
+> composePair (x,y) (Set ((u,v):s))
+>   | y == u    = insertSet (x,y) (composePair (x,y) (Set s))
+>   | otherwise = composePair (x,y) (Set s)

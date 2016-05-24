@@ -1,4 +1,20 @@
-module SetOrd (Set(..), emptySet, isEmpty, inSet, subSet, insertSet, deleteSet, powerSet, takeSet, (!!!), list2set, unionSet)
+-- SetOrd.hs
+-- Sets as a ordered lists without duplicates.
+
+module SetOrd ( 
+  Set(..), 
+  emptySet, 
+  isEmpty, 
+  inSet, 
+  subSet, 
+  insertSet, 
+  deleteSet, 
+  powerSet, 
+  takeSet, 
+  (!!!), 
+  list2set, 
+  unionSet
+  )
 
 where
 
@@ -11,8 +27,9 @@ instance (Show a) => Show (Set a) where
 
 showSet [] str = showString "{}" str
 showSet (x:xs) str = showChar '{' ( shows x ( showl xs str))
-  where showl [] str = showChar '}' str
-        showl (x:xs) str = showChar ',' (shows x (showl xs str))
+  where 
+    showl [] str = showChar '}' str
+    showl (x:xs) str = showChar ',' (shows x (showl xs str))
 
 emptySet :: Set a
 emptySet = Set []

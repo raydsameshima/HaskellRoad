@@ -13,7 +13,8 @@ module SetEq (
   powerSet, 
   takeSet, 
   list2set, 
-  (!!!))
+  (!!!)
+  )
 
 where
 
