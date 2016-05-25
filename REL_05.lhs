@@ -5,7 +5,7 @@ Chapter 05 Relations
 > module REL where
 
 > import Data.List
-> import SetOrd
+> import SetOrd hiding (unionSet)
 
 5.1 The Notion of a Relation
 
@@ -695,15 +695,60 @@ A check for symmetry:
 
 A check for transitivity:
 
-> transR emptySet = True
+> transR :: Ord a => Rel a -> Bool
+> transR (Set []) = True
+> -- transR emptySet = True 
+> -- If we put the emptySet, there is an error 
+> --   "Pattern match(es) are overlapped"
 > transR (Set s) = and [trans pair (Set s) | pair <- s]
 >   where
 >     trans (x,y) (Set r) = and [inSet (x,v) (Set r) | (u,v) <- r, u==y]
 
 Composition:
+Since the composition
+  S \circ R := {(a,c) | \exists b aSb and bRc}
+we should make a helper function:
 
 > composePair :: Ord a => (a,a) -> Rel a -> Rel a
-> composePair (x,y) emptySet = emptySet
+> composePair (x,y) (Set []) = emptySet
 > composePair (x,y) (Set ((u,v):s))
->   | y == u    = insertSet (x,y) (composePair (x,y) (Set s))
+>   | y == u    = insertSet (x,v) (composePair (x,y) (Set s))
 >   | otherwise = composePair (x,y) (Set s)
+
+In addition, we need set union.
+Note that our set implementation is list without duplicates.
+Here is improved version of unionSet (from SetOrd.hs):
+
+> unionSet :: (Ord a) => Set a -> Set a -> Set a
+> unionSet (Set []) set2 = set2
+> unionSet (Set (x:xs)) set2 =
+>   insertSet x (unionSet (Set xs) (deleteSet x set2))
+
+Using above helpers, we can construct the relation composition:
+
+> compR :: Ord a => Rel a -> Rel a -> Rel a
+> compR (Set []) _ = emptySet
+> compR (Set ((x,y):s)) r =
+>   unionSet (composePair (x,y) r) (compR (Set s) r)
+
+Composition of a relation with itself (R^n):
+
+> repeatR :: Ord a => Rel a -> Int -> Rel a
+> repeatR r n
+>   | n <  1    = error "argument < 1"
+>   | n == 1    = r
+>   | otherwise = compR r (repeatR r (n-1))
+
+Example 5.51
+Let us use the implementation to illustrate Exercise 5.39.
+
+> r = Set [(0,2), (0,3), (1,0), (1,3), (2,0), (2,3)]
+> r2 = compR r r
+> r3 = repeatR r 3
+> r4 = repeatR r 4
+
+Also, the follwoing test yields "True":
+  *REL> let s = Set [(0,0), (0,2), (0,3), (1,0), (1,2), (1,3), (2,0), (2,2), (2,3)]
+  *REL> (unionSet r (compR s r)) == s
+  True
+
