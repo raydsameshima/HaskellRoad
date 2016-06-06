@@ -752,3 +752,48 @@ Also, the follwoing test yields "True":
   *REL> (unionSet r (compR s r)) == s
   True
 
+Exercise 5.52
+Extend this implementation with a function
+
+> restrictR :: Ord a => Set a -> Rel a -> Rel a
+
+that gives the restriction of a relation to a set.
+In the type declaration,
+  Set a
+is the restricting set.
+
+> restrictR set rel = intersectSet (totalR set) rel
+>
+> intersectSet :: Ord a => Set a -> Set a -> Set a
+> intersectSet (Set []) _ = Set []
+> intersectSet (Set (x:xs)) set2
+>   | x `inSet` set2 = insertSet x $ intersectSet (Set xs) set2
+>   | otherwise      = intersectSet (Set xs) set2
+> 
+
+Exercise 5.53
+Use 
+  unionSet
+to define reflexive closure and symmetric closure of a relation.
+
+> rclosR, sclosR :: Ord a => Rel a -> Rel a
+> rclosR r = unionSet r (idR background)
+>   where 
+>     background = unionSet (domR r) (ranR r)
+>
+> sclosR r = unionSet r (invR r)
+
+Exercise 5.54
+Define a function
+
+> tclosR :: Ord a => Rel a -> Rel a
+
+to compute the transitive closure of a relation R, for relations implemented as Ord a => Rel a.
+
+> tclosR r
+>   | transR r  = r 
+>   | otherwise = tclosR $ unionSet r (r `compR` r)
+
+That is, until it become transitive, 
+  r + r^2 + ...
+
