@@ -794,6 +794,6 @@ to compute the transitive closure of a relation R, for relations implemented as 
 >   | transR r  = r 
 >   | otherwise = tclosR $ unionSet r (r `compR` r)
 
-That is, until it become transitive, 
+That is, until it become transitive, take set-theoretic sum of r:
   r + r^2 + ...
 
