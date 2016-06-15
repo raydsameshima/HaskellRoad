@@ -791,9 +791,130 @@ Define a function
 to compute the transitive closure of a relation R, for relations implemented as Ord a => Rel a.
 
 > tclosR r
->   | transR r  = r 
+>   | transR r  = r -- until r becomes transitive.
 >   | otherwise = tclosR $ unionSet r (r `compR` r)
 
 That is, until it become transitive, take set-theoretic sum of r:
   r + r^2 + ...
 
+5.4 Implementing Relations as Characteristic Functions
+
+  "x divides y" :<=> \exists q, y = x*q
+
+> divides :: Integral n => n -> n -> Bool
+> d `divides` n
+>   | d == 0    = error "divides: zero division"
+>   | otherwise = (n `rem` d) == 0 
+
+We'll now work out the representation of relations as characteristic functions.
+
+> type Rel' a = a -> a -> Bool
+>
+> emptyR' :: Rel' a
+> emptyR' = \_ _ -> False
+>
+> list2rel' :: Eq a => [(a,a)] -> Rel' a
+> list2rel' xys = \x y -> (x,y) `elem` xys
+>
+> idR' :: Eq a => [a] -> Rel' a
+> idR' xs = \x y -> (x == y) && (x `elem` xs)
+>
+> invR' :: Rel' a -> Rel' a
+> invR' = flip -- :: (a -> b -> c) -> b -> a -> c
+>
+> -- inR' checks whether a pair in in a relation.
+> inR' :: Rel' a -> (a,a) -> Bool
+> inR' = uncurry -- :: (a -> b -> c) -> (a, b) -> c
+>
+> -- isReflective on a list
+> reflR' :: [a] -> Rel' a -> Bool
+> reflR' xs rel = and [x `rel` x | x <- xs]
+>
+> irreflR' :: [a] -> Rel' a -> Bool
+> irreflR' xs rel = and [not(x `rel` x) | x <- xs]
+>
+> -- (p ==> q) \equiv (not p || q) \equiv (not (p && not q))
+> symR' :: [a] -> Rel' a -> Bool
+> symR' xs rel = and [not(x `rel` y && not (y `rel` x)) | x <- xs, y <- xs]
+>
+> transR' :: [a] -> Rel' a -> Bool
+> transR' xs rel
+>   = and [ not (x `rel` y && y `rel` z && not (x `rel` z))
+>         | x <- xs, y <- xs, z <- xs
+>         ]
+>
+> unionR', intersR':: Rel' a -> Rel' a -> Rel' a
+> unionR'  rel1 rel2 x y = x `rel1` y || x `rel2` y
+> intersR' rel1 rel2 x y = x `rel1` y && x `rel2` y
+>
+> reflClosure' :: Eq a => Rel' a -> Rel' a
+> reflClosure' rel = unionR' rel (==) -- with "diagonal"
+>
+> symClosure' :: Rel' a -> Rel' a
+> symClosure' rel = unionR' rel (invR' rel)
+>
+> -- Relation composition on a list.
+> compR' :: [a] -> Rel' a -> Rel' a -> Rel' a
+> compR' xs rel1 rel2 x y
+>   = or [x `rel1` z && z `rel2` y| z <- xs]
+>
+> -- "Power" of relation, i.e., the composition of a relation with itself.
+> repeatR' :: [a] -> Rel' a -> Int -> Rel' a
+> repeatR' xs rel n
+>   | n <  1    = error "repeatR': the number shold be positive"
+>   | n == 1    = rel
+>   | otherwise = compR' xs rel (repeatR' xs rel (n-1))
+
+Exercise 5.55
+
+Exercise 5.56
+
+> transClosure' :: [a] -> Rel' a -> Rel' a
+> transClosure' xs rel
+>   | transR' xs rel = rel
+>   | otherwise = transClosure' xs (unionR' rel (compR' xs rel rel))
+
+5.5 Equivalence Relations
+Definition 5.57
+A relation R on a set A is an equivalence relation iff R is reflexive, transitive, and symmetric.
+
+Example 5.58, 5.59
+
+> -- isEquivalenceRelation
+> equivalenceR :: Ord a => Set a -> Rel a -> Bool
+> equivalenceR set rel = symR rel && reflR set rel && transR rel
+>
+> equivalenceR' :: [a] -> Rel' a -> Bool
+> equivalenceR' xs rel = symR' xs rel && reflR' xs rel && transR' xs rel
+
+Example 5.60, 5.61, 5.62, 5.63, 5.64
+
+Proposition 5.65 (modulo relation)
+  m =_n k :<=> n "divides" (m-k)
+
+Exercise 5.67
+
+> modulo :: Integral n => n -> n -> n -> Bool
+> modulo n = \x y -> n `divides` (x-y) 
+
+Example 5.68
+
+> equalSize :: [a] -> [b] -> Bool
+> equalSize list1 list2 = (length list1) == (length list2)
+
+Exercise 5.69
+1. [(2,3),(3,5),(5,2)]
+This is not symmetric, not reflexive, and not transitive since
+  (2,3) . (3.5) = (2,5)
+is not in it.
+
+2. [(n,m) | |n-m| >= 3]
+This is symmetric and reflexive, but not transitive, e.g.,
+  (0,3) . (3,6) = (0,6)
+is not in it.
+
+Q.E.D.
+
+Exercise 5.70
+
+Exercise 5.71
