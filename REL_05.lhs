@@ -918,3 +918,28 @@ Q.E.D.
 Exercise 5.70
 
 Exercise 5.71
+The number of relations.
+
+If a set A has a finite cardinality n, then
+  A^2 has n^2 elements,
+  2^(A^2) has 2^(n^2).
+On A, all reflexive relation has diagonal elements.
+So each non diagonal elements (n*(n-1)) in A^2 determines reflexive relations.
+  reflexive: 2^(n*(n-1))
+Similarly, the number of elements of symmetric n*n matrix is (n^2+n)/2, so
+  symmetric: 2^((n^2+n)/2)
+
+Example 5.72
+
+Exercise 5.73
+A relation R on A is
+  symmetric
+  transitive
+  \forall x \in A, \exists y \in A s.t. xRy.
+Then, since R is symmetric,
+  yRx
+and transitive,
+  xRy and yRx ==> xRx,
+i.e., R is transitive.
+
+Exercise 5.74
