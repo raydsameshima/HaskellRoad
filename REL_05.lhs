@@ -970,4 +970,35 @@ Show that R is an equivalence relation iff
 
 Proof
 (==>)
-Since 
+Since R is an equivalence relation, i.e., reflexive, symmetric, and transitive,
+  \Delta_A \subseteq R.
+For arbitrary (x,y) \in R,
+  (x,y) = (x,y) \circ (y,y) \in R \circ R^{-1},
+so R \subset R \circ R^{-1}.
+Conversely, take an arbitrary (x,y) \circ (y,z) \in R \circ R^{-1}, then since R is symmetric, (y,z) \in R and
+  (x,z) = (x,y) \circ (y,z) \in R,
+so R \supset R \circ R^{-1} and indeed
+  R = R \circ R^{-1}.
+
+(<==)
+Suppose R satisfies
+  \Delta_A \subseteq R
+  R = R \circ R^{-1}
+then R is reflexive since for arbitrary (x,y) \in R,
+  (x,y) \circ (y,x) \in R \circ R^{-1}
+and
+  (x,x) \in R.
+In addition, for all (x,y) \in R, (y,x) \in R^{-1}, and
+  (y,x) = (y,y) \circ (y,x) \in R \circ R^{-1},
+that is
+  (y,x) \in R
+so R is symmetric.
+Assume (x,y),(y,z) \in R, then
+  (y,x),(z,y) \in R, since R is symmetric
+and (y,z) \in R^{-1},
+  (x,y) \circ (y,z) \in R \cir R^{-1}
+that is
+  (x,z) \in R
+so R is transitive.
+
+Q.E.D.
