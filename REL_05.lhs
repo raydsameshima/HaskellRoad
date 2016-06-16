@@ -930,16 +930,44 @@ Similarly, the number of elements of symmetric n*n matrix is (n^2+n)/2, so
   symmetric: 2^((n^2+n)/2)
 
 Example 5.72
+Assume a relation R on a set A is
+  transitive
+  reflexive
+i.e., R is a preorder on A.
+Define
+  x ~ y :<=> xRy \and yRx.
+Then we will show that this is an equivalence relation.
+Symmetry is immediate from the definition.
+Since R is reflexive,
+  x ~ x :<=> xRx \and xRx <=> xRx
+so is ~.
+Finally,
+  x ~ y \and y ~ z
+  :<=> (xRy \and yRx) \and (yRz \and zRy)
+Since R is transitive, we get 
+  xRz \and zRx :<=> x ~ z.
+
+Q.E.D.
 
 Exercise 5.73
-A relation R on A is
+Assume a relation R on A is
   symmetric
   transitive
   \forall x \in A, \exists y \in A s.t. xRy.
-Then, since R is symmetric,
+Then, we show that R is transitive.
+Since R is symmetric,
   yRx
 and transitive,
   xRy and yRx ==> xRx,
 i.e., R is transitive.
 
+Q.E.D.
+
 Exercise 5.74
+Show that R is an equivalence relation iff
+  \Delta_A \subseteq R
+  R = R \circ R^{-1}
+
+Proof
+(==>)
+Since 
