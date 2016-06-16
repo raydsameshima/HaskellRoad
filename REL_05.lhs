@@ -1002,3 +1002,140 @@ that is
 so R is transitive.
 
 Q.E.D.
+
+5.6 Equivalence Classes and Partitions
+Definition 5.75
+Suppose R is an equivalence relation on A and a \in A.
+The set
+  |a| := {b \in A| bRa}
+is the R-equivalence class of a, or the equivalence class of a modulo R.
+
+Example 5.76, 5.77
+
+Example 5.78
+The equivalence class of 2 in Z (mod 4) is the set {2+4*n| n \in Z}.
+
+  *REL> filter (modulo 4 2) [-15..15]
+  [-14,-10,-6,-2,2,6,10,14]
+
+Example 5.79
+The equivalence class of 
+  {0,1,2}
+modulo the equivalence of having the same number of elements is the collection of all three-element sets.
+
+Lemma 5.80
+  |a| = |b| <=> aRb
+
+Proof
+(==>)
+Since the representative element is in its equivalence class,
+  a \in |a|
+and by the extensionality of sets, 
+  a \in |b| = {c|cRb}
+Therefore,
+  aRb.
+
+(<==)
+Since R is symmetric,
+  aRb <=> bRa
+and for
+  |a| = {c|cRa}
+we also have
+  cRa, aRb ==> cRb
+i.e.,
+  |a| = {c|cRb} = |b|.
+
+Q.E.D.
+
+Lemma 5.81
+Let R be an equivalence relation on A.
+
+1. Every equivalence class is non-empty.
+2. Every element of A belongs to some equivalence class.
+
+Since R is reflexive, \forll a \in A,
+  aRa
+therefore, for arbitrary element a,
+  a \in |a|.
+
+3. Different equivalence classes are disjoint.
+
+From the contraposition of 
+  |a|=|b| <=> aRb,
+we have
+  not(aRb) <=> |a| \neq |b|.  
+
+Q.E.D.
+
+Exercise 5.82
+Use the implementation 
+  Rel' a
+as characteristic functions over type a to implement a function
+
+> raccess :: Rel' a -> a -> [a] -> [a]
+
+that takes a relation rel, an object x, and a list lst, and returns the list of all objects f from lst s.t. rel x y holds.
+
+> raccess rel x ys = [y | y <- ys, x `rel` y]
+
+Definition 5.83
+A family FA of subsets of a set A is called partition of A iff
+  \emptyset \neq FA 
+  \cup FA = A
+  X,Y \in FA, X \neq Y ==> X \cap Y = \emptyset.
+
+The elements of a partition are called its components.
+
+Example 5.84
+
+Exercise 5.85
+If
+  {A_i | i \in I}, {B_j | j \in J}
+are the partition of A and B, then
+  {A_i \times B_j | (i,j} \in I \times J}
+is a partition of A \times B.
+
+Proof
+Since no i,j with A_i = \emptyset, B_j = \emptyset,
+  \emptyset \not\in {A_i \times B_j | (i,j} \in I \times J}
+Next,
+  \cup_{(i,j) \in I \times J} A_i \times B_j
+  = \cup_i A_i \times \cup_j B_j
+  = A \times B
+Finally, consider
+  X,Y \in {A_i \times B_j | (i,j} \in I \times J}
+with X \neq Y.
+If X \cap Y \neq \emptyset, then we can pick some element
+  (a,b) \in X \cap Y
+That means
+  a \in A_i \cap A_k
+  b \in B_j \cap B_l
+of some indices.
+However, {A_i |i\in I} is the partition of A and 
+  A_i \cap A_k = \emptyset
+so, we can not pick a, therefore
+  X \cap Y = \emptyset.
+
+Q.E.D.
+
+Definition 5.86 (Quotient)
+Assume that R is an equivalence on A.
+The collection of equivalence classes of R,
+  A/R := {|a| | a \in A}
+is called the quotient of A modulo R.
+
+Theorem 5.87
+Every quotient (of a set, modulo an equivalence) is a partition (of that set).
+
+Proof
+From Lemma 5.81.
+
+Q.E.D.
+
+Example 5.88
+A/\Delta_A = {{a} | a \in A}
+A/(A^2) = {A}
+
+Example 5.89, 5.90, 5.91
+
+
