@@ -1200,4 +1200,21 @@ is also finite, and is indeed
 
 Q.E.D.
 
+Here we have used the following lemma.
+Let A,B,C be subsets in N, then
+  (A-B) \cup (B-C) = A-C.
+
+Since
+  A-B := {x\in A| x \not\in B}
+  B-C := {y\in B| y \not\in C}
+the left hand side becomes
+  (A-B) \cup (B-C)
+  = {x| (x\in A and not(x\in B)) or (x \in B and not(x\in C))}
+  = {x| x\in A and not(x\in C)}
+  = A-C
+
+Exercise 5.102
+
+Example 5.103
+
   
