@@ -1215,6 +1215,26 @@ the left hand side becomes
 
 Exercise 5.102
 
-Example 5.103
+Example 5.103, Exercise 5.104
 
-  
+> stirling :: Int -> Int -> Int
+> stirling n k
+>   | k >  n    = error "bell: first >= second"
+>   | k == 1    = 1
+>   | n == k    = 1
+>   | otherwise = k*(stirling (n-1) k) + (stirling (n-1) (k-1))
+>
+> bell :: Int -> Int
+> bell n = sum (map (stirling n) [1..n])
+>  
+> bell' :: Int -> Int
+> bell' 0 = 1
+> bell' n = sum [stirling n k | k <- [1..n]]
+>
+
+Exercise 5.105
+  *REL> map bell [0..5]
+  [0,1,2,5,15,52]
+
+Exercise 5.106
+
