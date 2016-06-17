@@ -1138,4 +1138,66 @@ A/(A^2) = {A}
 
 Example 5.89, 5.90, 5.91
 
+Exercise 5.92
 
+Example 5.93 (from Example 5.72)
+Let R be a pre-order on A.
+Then ~ given by
+  x ~ y :<=> xRy \and yRx
+is an equivalence relation.
+Consider the relation R_~ on A/~ given by
+  |x| R_~ |y| :<=> xRy.
+The relation R_~ is a partial order on A/~ called the po-set reflection of R.
+
+The definition is independent of the representatives, because assume x~x' and y~y', and xRy.
+Then
+  xRx' \and x'Rx
+  yRy' \and y'Ry
+and
+  x'Ry' <=> |x'| R_~ |y'|
+since R is transitive.
+
+R_~ is reflexive since R is:
+  |x| R_~ |x| :<=> xRx.
+
+R_~ is anti-symmetric, for suppose
+  |x| R_~ |y|
+and
+  |y| R_~ |x|
+Then 
+  xRy \and yRx
+and by the definition of ~,
+  |x| = |y|
+
+Theorem 5.94
+Every partition (of a set) is a quotient (of that set, modulo a certain equivalence relation).
+
+Example 5.95, 5.96, 5.97, 5.98, 5.99
+
+Example 5.100
+If ~ on 2^N is given by
+  A~B :<=> (A-B) \cup (B-A) is finite,
+then ~ is reflexive, since (A-A) = \emptyset is finite.
+
+Exercise 5.101
+Show that above ~ is an equivalence relation(reflexivity is shown in 5.100).
+
+Proof
+Since the left hand side of the definition is symmetric, so is ~:
+  A~B :<=> (A-B)\cup (B-A) is finite
+      <=>  (B-A)\cup (A-B) is finite
+      <=>  B~A
+
+Next, assume
+  A~B, B~C
+that is
+  (A-B)\cup (B-A) is finite
+  (B-C)\cup (C-B) is finite
+Thus
+  ((A-B)\cup (B-A)) \cup ((B-C)\cup (C-B))
+is also finite, and is indeed
+  (A-C) \cup (C-A) <=>: A~C
+
+Q.E.D.
+
+  
