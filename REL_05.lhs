@@ -623,18 +623,80 @@ Q.E.D.
 
 Ancestral 
 The reflexive transitive closure of a relation R is often called the ancestral of R,
-  R^*
+  R^* := R^+ \cup \Delta_A
 Note that R^* is a pre order, since R^* is, by definition, is reflexive and transitive.
 
 Exercise 5.47
 Give the reflexive transitive closure of
-  R := {(n,n+1) | n \in N}.
+  R := {(n,n+1) | n \in N}
+    = suc
 
   R^* = <= (reflexive and transitive)
 
-? Exercise 5.48
+Exercise 5.48.1
+Show that an intersection of arbitrary many transitive relation is transitive.
 
-? Exercise 5.49
+Proof
+Consider I-indexed R_i \subset A^2 of transitive relations.
+To be proved:
+  T:=\cap_{i\in I} R_i 
+is transitive.
+
+For all
+  (x,y),(y,z) \in T,
+satisfy for all i\in I,
+  x R_i y and y R_i z
+Since R_i is transitive, we get for arbitrary i \in I,
+  x R_i z.
+so
+  x T z 
+and T is transitive.
+
+Q.E.D.
+
+Exercise 5.48.2
+Suppose that R is a relation on A.
+(Note that A^2 is a transitive relation on A that extends R.)
+Conclude that the intersection of all transitive relations extending R is the least transitive relation extending R.
+In other words, R^+ equals the intersection of all transitive relations extending R.
+  R^+ = \cap{S | R \subset S \subset A^2, S is transitive}
+
+Proof
+For this R, define
+  Q:=\cap {S | R \subset S \subset A^2, S is transitive}
+then we show that the transitive closure of R is Q: R^+=Q.
+Since A^2 is transitive,
+  {S| R\subset S \subset A^2, S is transitive}
+is not empty, i.e., at least
+  A^2 \in {S| R\subset S \subset A^2, S is transitive}.
+By definition,
+  R \subset Q,
+and Q is transitive from 5.48.1, so
+  R^+ \subset Q.
+Since we have shown in 5.42 that R^+ is the smallest transitive relation which include R, 
+  Q = R^+ \cap {S | R \subset S \subset A^2, S is transitive, S \neq R^+}
+    = R^+
+
+Q.E.D.
+
+Exercise 5.49.1
+  (R^*)^{-1} = (R^{-1})^*
+  
+Proof
+For an arbitrary relation R on a set A,
+  R^* := R^+ \cup \Delta_A
+  R^+ := \cup_{n >= 1} R^n
+and
+  (R^*)^{-1} 
+  = {(d,c) | (c,d) \in R^+ \cup \Delta_A} 
+  = {(d,c) | (c,d) \in R^+} \cup \Delta_A
+  = (R^{-1})^*
+
+Q.E.D. 
+
+? Exercise 5.49.2
+
+? Exercise 5.49.3
 
 ? Exercise 5.50
 
@@ -1213,6 +1275,8 @@ the left hand side becomes
   = {x| x\in A and not(x\in C)}
   = A-C
 
+Q.E.D.
+
 Exercise 5.102
 
 Example 5.103, Exercise 5.104
@@ -1225,6 +1289,7 @@ Example 5.103, Exercise 5.104
 >   | otherwise = k*(stirling (n-1) k) + (stirling (n-1) (k-1))
 >
 > bell :: Int -> Int
+> bell 0 = 1
 > bell n = sum (map (stirling n) [1..n])
 >  
 > bell' :: Int -> Int
@@ -1234,7 +1299,88 @@ Example 5.103, Exercise 5.104
 
 Exercise 5.105
   *REL> map bell [0..5]
-  [0,1,2,5,15,52]
+  [1,1,2,5,15,52]
+  *REL> map bell' [0..5]
+  [1,1,2,5,15,52] 
 
 Exercise 5.106
+Show the second and third conditions 
+  \cup FA = F
+  X \neq Y \in FA ==> X \cap Y = \empty
+in Definition 5.83 of partition are equivalent with
+  \forall a \in A, \exists! K \in FA s.t. a \in K.
 
+Proof
+(==>)
+For all a \in A, there exists some X \in FA s.t. a \in X.
+If there exists other Y s.t. a \in Y, then X \cap Y = empty, and it contradicts a \in Y, so there is only one such X.
+
+(<==)
+Such K covers A
+  \cup K = A,
+and its uniqueness implies the disjoint property of third condition.
+
+Q.E.D.
+
+? Exercise 5.107
+(R \cap S) of two equivalence relations on A is again an equivalence relation.
+
+? Exercise 5.108
+
+Exercise 5.109 (A list partition)
+Consider a list partition xss of a list xs.
+
+> listPartition :: Eq a => [a] -> [[a]] -> Bool
+
+[] is NOT an element of xss,
+xs and concat xs have the same elements,
+if ys and zs are distinct elements of xss, then ys and zs have no elements in common.
+
+> listPartition xs xss =
+>   all (`elem` xs) (concat xss) 
+>     && all (`elem` (concat xss)) xs
+>     && helper xss []
+>     where
+>       helper []       _ = True -- base case
+>       helper ([]:xss) _ = False -- [] is not in partition
+>       helper (xs:xss) dom -- disjointness
+>         | xs `intersect` dom == [] = helper xss (xs `union` dom)
+>         | otherwise                = False
+
+Exersice 5.110
+
+> listpart2equiv :: Ord a => [a] -> [[a]] -> Rel a
+> listpart2equiv dom xss
+>   | not (listPartition dom xss) = error "listpart2equiv: argument is not a list partition"
+>   | otherwise = list2set $ concat (map f xss)
+>   where
+>     f xs = [(x,y) | x <- xs, y <- xs]
+
+? Exercise 5.111
+
+Exercise 5.112
+
+> equiv2listpart :: Ord a => Set a -> Rel a -> [[a]]
+> equiv2listpart s@(Set xs) r
+>   | not (equivalenceR s r) = error "equiv2listpart: argument is not equivalence"
+>   | otherwise = genListpart r xs
+>   where
+>     genListpart r []     = []
+>     genListpart r (x:xs) = xclass : genListpart r (xs \\ xclass)
+>       where
+>         xclass = x : [y|y <- xs, (x,y) `inSet` r]
+
+Exercise 5.113
+
+> equiv2part :: Ord a => Set a -> Rel a -> Set (Set a)
+> equiv2part set rel = list2set $ map list2set (equiv2listpart set rel)
+
+Exercise 5.114
+For an arbitrary relation R on a set A,
+  R_e:= \Delta_A \cup (R \cup R^{-1})^+
+is the smallest equivalence relation that includes R.
+
+Proof
+Clearly
+  R \subset R_e.
+R_e is reflexive, because \Delta_A is contained in it.
