@@ -1234,6 +1234,27 @@ and by the definition of ~,
 Theorem 5.94
 Every partition (of a set) is a quotient (of that set, modulo a certain equivalence relation).
 
+Proof
+Let FA be an arbitrary partition of A.
+Define
+  a~b :<=> \exists S \in FA with a,b \in S
+then this is clearly symmetric.
+Since FA is a partition, for all a \in A, 
+  \exists! S \in FA s.t. a \in S,
+and this means
+  a~a
+and ~ is reflexive.
+Assume a~b~c, then there exist S,S' \in FA s.t.
+  a,b \in S and b,c \in S'
+but since FA is a partition and if S and S' share b then
+  S = S'
+and
+  a,c \in S
+that is, S is transitive.
+Therefore, S is an equivalence relation determined by the partition FA.
+
+Q.E.D.
+
 Example 5.95, 5.96, 5.97, 5.98, 5.99
 
 Example 5.100
@@ -1384,3 +1405,183 @@ Proof
 Clearly
   R \subset R_e.
 R_e is reflexive, because \Delta_A is contained in it.
+R_e is symmetric, because all element is either in \Delta_A, or in (R \cup R^{-1}).
+R_e is transitive, since R_e is the transitive closure of R.
+Therefore, R_e is an equivalence relation which include R.
+
+Assume S is an equivalence relation on A that include R.
+Let 
+  (c,d) \in R_e
+that is either
+  d==c
+or
+  (c,d) \in (R \cup R^{-1})^+
+If d==c, then from the reflexivity of S,
+  (c,d) \in S,
+and R_e \subset S.
+Otherwise, there is a k >= 1 with
+  (c,d) \in (R \cup R^{-1})^k
+Thus, there are (k-1) intermediate elements s.t.,
+  c(R\cup R^{-1})r .. r'(R\cup R^{-1})d
+Since R \subset S, we also have
+  cSr .. r'Sd
+and S is transitive,
+  cSd
+and S is transitive,
+  cSd
+Therefore R_e \subset S.
+
+Q.E.D.
+
+Exercise 5.115
+Let R be a relation on A.
+Then 
+  S := R^* \cap (R^{-1})^*
+is an equivalence relation on A, and the relation T on the quotient A/S given by
+  |a|_S T |b|_S :<=> aR^* b
+is a partial order.
+
+Proof
+Note that
+  R^* := R^+ \cup \Delta_A
+and
+  S := (R^+ \cup \Delta_A) \cap ((R^{-1})^+ \cup \Delta_A)
+    =(R^+ \cap (R^{-1})^+) \cup \Delta_A
+where we have used the distributive law.
+
+Then S is clearly reflexive and symmetric.
+From 5.48, (R^+ \cap (R^{-1})^+) is also transitive, and S is also transitive.
+So, S is an equivalence relation, and
+  |a|_S := {b \in A | bSa}
+is well defined.
+
+Since S is reflexive,
+  |a|_S T |a|_S :<=> aR^* a
+T is also reflexive.
+
+Assume |a|_S T |b|_S and |b|_S T |a|_S, then by definition,
+  aSb and bSa.
+This means
+  a \in |b|_S and b \in |a|_S 
+and 
+  |a|_S = |b|_S.
+So, T is anti-symmetric.
+
+Since S is transitive, T is also transitive.
+Therefore T is a partial order.
+
+Q.E.D.
+
+? Example 5.116
+
+Exercise 5.117, 5.118, 5.119, 5.120
+
+Exercise 5.121 
+Prove Theorem 5.94.
+
+? Exercise 5.122
+
+5.7 Integer Partitions
+The first integer partition of n is [n].
+Let B be the last integer partition generated.
+If B consists only of 1's, then done.
+Otherwise, there is a smallest non-1 part m in B.
+To generate the next partition, subtract 1 from m and collect all the units so as to match the new smallest part (m-1).
+
+> type Part = [Int]
+> -- Use a compressed form.
+> type CmprPart = (Int, Part)
+>
+> -- From above compressed form to bunch of 1's.
+> expand :: CmprPart -> Part
+> expand (n,p)
+>   | n <= 0    = p
+>   | otherwise = 1 : (expand ((n-1),p))
+>
+> -- We assume non-empty in (x:xs), since we use it only in generatePs.
+> nextPartition :: CmprPart -> CmprPart
+> nextPartition (k,(x:xs)) = pack (x-1) ((k+x),xs)
+>
+> pack :: Int -> CmprPart -> CmprPart
+> pack n (m,xs)
+>   | n <= 1    = (m,xs)
+>   | n >  m    = pack (n-1) (m,xs)
+>   | otherwise = pack n     (m-n,n:xs)
+> --   | otherwise = if n > m 
+> --                 then pack (n-1) (m,xs)
+> --                 else pack n     (m-n,n:xs)
+>
+> generatePs :: CmprPart -> [Part]
+> generatePs p@(n,[])     = [expand p]
+> generatePs p@(n,(x:xs)) = (expand p) : generatePs (nextPartition p)
+>
+> part :: Int -> [Part]
+> part n
+>   | n <  1    = [[]]
+>   | n == 1    = [[1]] -- base case
+>   | otherwise = generatePs (0,[n])
+
+Exercise 5.123
+Write a program
+
+> change :: Int -> [Int]
+
+that returns change in EURO coins for any positive integer, in the least number of coins.
+
+> coinsEU, coinsJP :: [Int]
+> coinsEU = [1,2,5,10,20,50,100,200]
+> coinsJP = [1,5,10,50,100,500]
+>
+> change n = moneyBack coinsEU n (n,[]) 
+>
+> moneyBack coins n (m,xs)
+>   | m == 0                   = xs
+>   | n <= m && n `elem` coins = moneyBack coins n     (m-n, n:xs)
+>   | otherwise                = moneyBack coins (n-1) (m,xs)
+
+  *REL> map change [1..10]
+  [[1],[2],[1,2],[2,2],[5],[1,5],[2,5],[1,2,5],[2,2,5],[10]]
+  *REL> foldl1 max $ map (length . change) [1..99]
+  6
+  *REL> foldl1 max $ map (length . change) [1..1000]
+  11
+
+> changeJP :: Int -> [Int]
+> changeJP n = moneyBack coinsJP n (n,[])
+  
+  *REL> map changeJP [1..10]
+  [[1],[1,1],[1,1,1],[1,1,1,1],[5],[1,5],[1,1,5],[1,1,1,5],[1,1,1,1,5],[10]]
+
+Exercise 5.124
+Modify the integer partition algorithm so that it generates all the possible ways of giving coin change for amounts of money up to 10 EURO, using all available EURO(cent) coins
+  *REL> coinsEU 
+  [1,2,5,10,20,50,100,200]
+
+> packCoins :: Int -> CmprPart -> CmprPart
+> packCoins k (m,ks)
+>   | k == 1                     = (m,ks)
+>   | k <= m && k `elem` coinsEU = packCoins k     (m-k,k:ks)
+>   | otherwise                  = packCoins (k-1) (m,ks)
+>
+> nextCpartition :: CmprPart -> CmprPart
+> nextCpartition (k, (x:xs)) = packCoins (x-1) ((k+x),xs)
+>
+> generateCps :: CmprPart -> [Part]
+> generateCps p@(n,[]) = [expand p]
+> generateCps p@(n,(x:xs))
+>   | x `elem` coinsEU = expand p : generateCps (nextCpartition p)
+>   | otherwise = generateCps $ nextCpartition p
+>
+> partC :: Int -> [Part]
+> partC n
+>   | n <  1 = [[]]
+>   | n == 1 = [[1]]
+>   | otherwise = generateCps $ packCoins m (n-m, [m])
+>   where
+>     m = maxInt $ filter (<= n) coinsEU
+>     maxInt []     = 0
+>     maxInt (x:xs) = max x (maxInt xs)
+
+Exercise 5.125
+  *REL> length $ partC 100
+  4563
