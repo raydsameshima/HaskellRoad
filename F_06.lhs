@@ -363,9 +363,379 @@ Example 6.30, 6.31
 Example 6.32
 Implemen an operation comp for composition of functions represented as lists of pairs.
 
-> comp :: [(a,b)] -> [(b,c)] -> [(a,c)]
-> comp = undefined
+> comp :: Eq b => [(b,c)] -> [(a,b)] -> [(a,c)]
+> g `comp` f = [(x, list2fct g y) | (x,y) <- f]
 
+Fact 6.34
+If f : X \to Y, then
+  f \circ 1_X = f = 1_Y \circ f
 
+Lemma 6.35
+  (h \circ g) \circ f = h \circ (g \circ f)
 
+Lemma 6.36
+Suppose that f:X\to Y, g:Y\to Z.
+1. g.f injective  ==> f injective
+2. g.f surjective ==> g surjective
+3. f and g injective  ==> g.f injective
+4. f and g surjective ==> g.f surjective
+
+Proof
+1.
+Let x \neq x' \in X, and
+  g.f(x) \neq g.f(x').
+If f(x) = f(x'), then clearly g(f(x)) = g(f(x')), but it contradicts.
+Therefore
+  f(x) \neq f(x'),
+and f is injective.
+
+2.
+For all z \in Z, there is some x \in X s.t.
+  z = g.f(x).
+Therefore, for this z, put
+  y := f(x) \in Y,
+and
+  z = g(y).
+This means that g is surjective.
+  
+3.
+Let x \neq x' \in X.
+Since f is injective,
+  f(x) \neq f(x')
+and g is also,
+  g.f(x) \neq g.f(x').
+That is g.f is injective.
+
+4.
+If both f and g are surjective, then for arbitrary z \in Z, there is some y s.t.
+  z = g(y),
+and for this y, there is some x \in X and
+  y = f(x).
+Therefore, for every z \in Z, there is some x s.t.
+  z = g.f(x)
+i.e., g.f is surjective.
+
+Q.E.D.
+
+Exercise 6.37
+
+Exercise 6.38
+  *F_06> let f = [(0,1),(1,2),(2,0),(3,0),(4,3)]
+  *F_06> let func38 = list2fct f
+  *F_06> fct2list (func38 . func38) [0..4]
+  [(0,2),(1,0),(2,1),(3,1),(4,0)]
+  *F_06> fct2list (func38 . func38 . func38 ) [0..4]
+  [(0,0),(1,1),(2,2),(3,2),(4,1)]
+  *F_06> fct2list (func38 . func38 . func38 . func38) [0..4]
+  [(0,1),(1,2),(2,0),(3,0),(4,2)]
+  *F_06> fct2list (func38 . func38 . func38 . func38 . func38 ) [0..4]
+  [(0,2),(1,0),(2,1),(3,1),(4,0)]
+
+  *F_06> let fList = [(0,1),(1,2),(2,0),(3,0),(4,3)]
+  *F_06> fList 
+  [(0,1),(1,2),(2,0),(3,0),(4,3)]
+  *F_06> fList `comp` it
+  [(0,2),(1,0),(2,1),(3,1),(4,0)]
+  *F_06> fList `comp` it
+  [(0,0),(1,1),(2,2),(3,2),(4,1)]
+  *F_06> fList `comp` it
+  [(0,1),(1,2),(2,0),(3,0),(4,2)]
+  *F_06> fList `comp` it
+  [(0,2),(1,0),(2,1),(3,1),(4,0)]
+
+Exercise 6.39
+Suppose that A is a finite set and f:A\to A is a bijection.
+Then 
+  f^1 := f
+  f^n := f \circ f^{n-1}, n >= 1
+
+Show that, somewhere in this sequence, there occurs the bijection 1_A.
+I.e., a number n exists s.t.
+  f^n = 1_A.
+
+Suppose that A has k elements.
+Can you give an upper bound for n?
+
+Proof
+
+The cardinality of 
+  A^A := {f:A\to A}
+is given by
+  |A|^|A|,
+where |A| is the cardinal, the number of elements, of the set A, and finite.
+If there is no such a number n, we could pick infinite many sequence, contradiction.
+Therefore, there is some number n s.t.
+  f^n = 1_A.
+
+The number of such bijection is the number of permutation of |A| elements.
+If we put
+  k = |A|
+then the number of permutation is
+  k!.
+The number n can NOT exceed k!.
+
+Q.E.D.
+
+Exercise 6.40
+Suppose that h:X \to X satisfies h^3=1_X.
+Then h is a bijection.
+
+Proof
+Since 1_A is bijection,
+  h \circ (h \circ h) = h^3 = (h \circ h) \circ h
+is both injective and surjective.
+From Lemma 6.36.1, both
+  h, h^2
+is injective, and from 6.36.2,
+  h, h^2
+is surjective.
+Therefore h and h^2 are bijective.
+
+Q.E.D
+
+(Exercise 6.41 Prove Lemma 6.36.)
+
+Exercise 6.42
+Suppose that f:X \to Y and g:Y \to Z are s.t. g\circ f is bijective.
+Show that f is surjective iff g is injective.
+
+Proof
+From Lemma 6.36, 
+  g.f is bijective ==> f injective and g surjective.
+If f is surjective, f indeed is bijective, then g is also.
+Therefore g is injective.
+
+Similarly, if g is injective, then g is indeed bijective and f is also.
+Thus f is surjective.
+
+Q.E.D.
+
+Exercise 6.43
+Suppose that 
+  \lim_{i \to \infty} a_i = a
+and that f:N \to N is injective.
+Show that 
+  \lim_{i \to \infty} a_{f(i)} = a.
+
+Proof
+For arbitrary e>0, there exists n with
+  i >= n ==> |a-a_i| < e
+(epsilon-N).
+
+We claim that for this n, there exists m with
+  \forall k >= m, (f(k) > n),
+i.e., 
+  m := min {k| f(k) > n }
+If there is no such k's, 
+  f(k) <= n, forall k,
+the domain of f is an infinite subset
+  [n,\infty)
+and the image is a finite subset
+  [0,n]
+it contradicts the injectivity of f, since 
+  k \= l ==> f(k) \= f(l).
+
+Therefore, for this e>0, there is n s.t.
+  k >= n ==> |a-a_{f(k)}| < e,
+and
+  \lim_{i\to\infty} a_{f(i)} = a.
+
+Q.E.D.
+
+6.4 Inverse Function
+Definition 6.44 (Inverse Function)
+Suppose that f: X \to Y.
+A function g : Y \to X is an inverse of f iff g.f = 1_X and f.g = 1_Y.
+
+Theorem 6.45
+A function has at most one inverse.
+A function has an inverse iff it is bijective.
+
+Proof
+If g,g' : Y \to X are inverses of f, then
+  g' = g' . 1_Y
+     = g' . f . g
+     = 1_X . g
+     = g
+Therefore, if f has its inverse, it is unique.
+
+From Lemma 3.63, since identities are both injective and surjective,
+  g.f = 1_X ==> f injective, g surjective
+  f.g = 1_Y ==> g injective, f surjective
+
+Q.E.D.
+
+Notation
+If f: X \to Y is a bijection, then its unique inverse is denoted by
+  f^{-1} : Y \to X.
+
+Example 6.46 (Celsius v.s. Fahenheit)
+
+> c2f, f2c :: Integral t => t -> t
+> c2f x = (9*x) `div` 5 + 32
+> f2c x = (5*(x-32)) `div` 9
+
+Left and right inverse.
+If g.f = 1_X holds, then g is called the left-inverse of f and f right-inverse of g.
+
+Example 6.47 (fromEnum and toEnum)
+fromEnum should be a left-inverse of toEnum.
+
+Excercise 6.48
+If f:X \to Y has left-inverse g and right-inverse h, then f is bijective and g=f^{-1}=h.
+
+Proof
+Since
+  f.g = 1_Y, h.f = 1_X
+we have
+  h = h . 1_Y
+    = h . f . g
+    = 1_X . g
+    = g
+Therefore, g satisfies 
+  f.g = 1_Y, g.f = 1_X
+and
+  g = f^{-1}.
+  
+Q.E.D.        
+
+Exercise 6.49
+Suppose that f:X \to Y and g:Y \to X, then the following are equivalent:
+1. g.f = 1_X
+2. {(f(x),x) | x \in X} \subset g.
+
+Proof
+If g.f=1_X, then an arbitrary x \in X, f(x) goes to
+  g.f(x) = x.
+So, (f(x),x) \in g.
+
+Conversely, for arbitrary x, if (f(x),x) \in g, then g maps from f(x) to x:
+  g(f(x)) = x,
+i.e., g.f = 1_X.
+
+Q.E.D.
+  
+Exercise 6.50
+X={0,1}, Y={2,3,4,5}, f={(0,3),(1,4)}.
+How many functions g:Y\to X have the proerty, that g.f=1_X?
+
+Since 
+  (3,0),(4,1) \in g
+but we don't care the others:
+  {g': {2,5} \to {0,1}}
+This has 2^2 = 4 elements.
+
+Q.E.D.
+
+Exercise 6.51
+Give an example of an injection f:X \to Y for which there is no g:Y \to X s.t. g.f = 1_X.
+
+The successor 
+  suc: N \to N
+is an injection:
+  m \= n ==> suc(m) \= suc(n)
+for which there is no g:N \to N with g.s = 1_N.
+
+Exercise 6.52
+Show that if f:X \to Y is surjective, a function g:Y\to X exists s.t. f.g=1_Y.
+
+Proof
+Since f:X \to Y is surjective,
+  \forall y \in Y, \exists x \in X s.t. y = f(x),
+so \forall y \in Y,
+  f^{-1}(y) \subset X
+is not empty and
+  \cup_{y\in Y} f^{-1}(y) = X
+is not empty.
+By Axiom of Choice, there is a choice function
+  g:Y \to \cup_{y\in Y} f^{-1}(y)
+s.t.
+  g(y) \in f^{-1}(y).
+So
+  f(g(y)) = y, \forall y \in Y.
+
+Q.E.D.
+
+Exercise 6.53
+How many right-inverses are there to the function
+  {(0,5), (1,5), (2,5), (3,6), (4,6)}
+(domain={0,1,2,3,4}, codomain={5,6})?
+
+The right-inverse
+  g:{5,6} \to {0,1,2,3,4}
+satisfies
+  f.g(5) = 5 and f.g(6) = 6
+So
+  g(5) = 0,1,2
+  g(6) = 3,4
+and there are 3*2 = 6 such right-inverses.
+
+Q.E.D.
+
+Exercise 6.54
+
+Exercise 6.55
+Suppose that f:X\to Y is a surjection and h:Y\to X.
+Show that the following are equivalent:
+1. h is right-inverse of f,
+2. h \subset {(f(x),x)| x \in X}
+
+Proof
+1.==>2.
+Take an arbitrary pair in h:
+  \forall (y, h(y)) \in h
+then since f.h=1_Y and h(y) \in X,
+  (y,h(y)) \in {(f(x),x)| x \in X}
+i.e.,
+  h \subset {(f(x),x)| x \in X}.
+
+2.==>1.
+Since any element in h is the following form
+  (f(x),x)
+the mapping h satisfies
+  \forall y \in Y, \exists x \in X with y = h(x)
+  (y=f(x),h(y)=x)
+therefore
+  \forall y \in Y, f(h(y)) = f(x) = y
+and this is equivalent to
+  f.h=1_Y.
+  
+Q.E.D.    
+
+Exercise 6.56
+Show 
+1. Every function that has a surjective right-inverse is a bijection.
+2. Every function that has an injective left-inverse is a bijection.
+
+Proof
+1.
+Let f:X\to Y with surjective right-inverse
+  f.g=1_Y.
+From lemma 6.36, f is surjective, and g is injective i.e., g is bijective.
+So
+  f = g^{-1}
+is also bijective.
+
+2.
+Let f:X\to Y with injective left-inverse
+  h.f=1_X.
+From lemma 6.36, h is surjective, i.e., h is bijective:
+  f = h^{-1}.
+
+Q.E.D.
+
+6.5 Partial Functions
+The computational importance of partial functions is in the systematic perspective they provide on exception handling.
+
+Exercise 6.57
+Define a partial function
+
+> stringCompare :: String -> String -> Maybe Ordering
+> stringCompare xs ys 
+>   | any (not . isAB) (xs++ys) = Nothing
+>   | otherwise                 = Just (compare xs ys)
+>
+> isAB x = x `elem` ['a'..'Z']
+
+6.6 Functions as Partitions
 
