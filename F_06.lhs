@@ -1063,14 +1063,124 @@ then
 if h is injective(surjective), then h\circ - is also injective(surjective).
 
 Proof
+(injective)
 If for g,g'\in Y^X,
   h\circ -(g) = h\circ -(g')
-i.e.,
-  h\circ (g) = h\circ (g')
+     h\circ g = h\circ g'
+i.e., \forall x \in X,
+  h.g(x) = h.g'(x)
+  h(g(x))= h(g'(x))
+Since h is injective, we have
+  g(x) = g'(x), \forall x \in X
+So
+  g = g'
+and h\circ - is injective.
 
+(surjective)
+Consider an arbitrary f:X\to Z (or f \in Z^X).
+Then \forall x \in X, f(x) \in Z.
+Since h:X\to Z is surjective, for this f(x), there exists y \in Y s.t.
+  f(x) = h(y).
+Define g:X\to Y by this y:
+  g(x) := y (pick up one, if need.)
+i.e., \forall x \in X,
+  f(x) = h(f)
+       = h(g(x))
+       = h.g(x)
+That is
+  f = h.g
+So if h\circ - is surjective.
 
+Q.E.D.
 
+Exercise 6.72
+Suppose X \neq \emptyset, Y and Z are sets and that h:X\to Y.
+Then for
+  -\circ h:Z^Y \to Z^X;g \mapsto g.h,
 
+Exercise 6.72
+Suppose X \neq \emptyset, Y and Z are sets and that h:X\to Y.
+Then for
+  -\circ h:Z^Y \to Z^X;g \mapsto g.h,
+if h is injective(surjective), then -\circ h is surjective(injective).
 
+Proof
+(injective h)
+Since h is injevtive, the co-restriction
+  h':X\to h(X)
+is bijective.
+Consider an arbitrary f \in Z^X, and define
+  g':h(X) \to f(X)
+by
+  g'(h(x)) := f(x)
+Then we can define
+  g:Y\to Z
+by
+  g(y) = g'(y) y \in h(X) (or g(h(x)) = g'(h(x)) = f(x))
+       = const   otherwise
+So \forall f \in Z^X, \exists g \in Z^Y s.t.
+  g.h = f
+and this means -\circ h is surjective.
 
+(surjective h)
+Let
+  g.h = g'.h \in Z^X
+That is, \forall x \in X,
+  g.h(x) = g'.h(x)
+Since h is surjective, \forall y \in Y, \exists x s.t. y=h(x), and this means
+  g(y) = g'(y), \forall y \in Y.
+So
+  g = g' \in Z^Y
+and -\circ h is injective.
 
+Q.E.D.
+
+6.8 Congruences
+n-ary operation
+A function
+  f:X^n \to X
+is called an n-ary operation on X.
+Addition and multiplication are binary operations on N (Z,Q,R,C).
+
+Definition 6.73 (Congruence)
+If f be an n-ary operation on A, and R an equivalence relation on A, then R is a congruence for f (or R is compatible with f) iff for all
+  x_1, ..., x_n, y_1, ..., y_n \in A, x_1 R y_1, ..., x_n R y_n,
+imply that
+  f(x_1, ..., x_n) R f(y_1, ..., y_n).
+If R is a congruence for f, then the operation induced by f on A/R is the operation
+  f_R:(A/R)^n \to A/R
+given by
+  f_R(|a_1|_R, ..., |a_n|_R) := |f(a_1, ..., a_n)|_R.
+If (A,f) is a set with an operation f on it and R is a congruence for f, then
+  (A_R, f_R)
+is the quotient structure defined by R.
+
+Example 6.74
+Consider the modulo n relation on Z.
+Suppose
+  m \equiv_n m'
+  k \equiv_n k'
+then there are a,b \in Z with
+  m' = m + a*n
+  k' = k + b*n.
+Thus
+  m' + k' = m + k + (a+b)*n
+and
+  m' + k' \equive_n m + k.
+This shows that \equive_n is a congruence for additions.
+
+Exercise 6.75
+\equive_n on Z is a congruence for multiplication, for any n \in Z with n \neq 0.
+
+Using same symbols in 6.74,
+  m'*k' = (m+a*n)*(k+b*n)
+        = m*k + (m*b + a*k + a*b*n)*n
+and
+  m'*k' \equive_n m*k.
+So \equive_n is a congruence for multiplication.
+
+Q.E.D.
+
+Example 6.76, 6.77
+
+Exercise 6.78
