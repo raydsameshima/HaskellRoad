@@ -97,11 +97,10 @@ A model of a clock that ticks until it gets unhinged.
   c --crack-> c0
 
     tick
-    ----
    /    \
    \    /
-    -->c-->c0
-        crack
+    -->c--crack->c0
+
 This process of the ticking clock is nondeterministic.
 The clock keeps ticking, until at some point, for no reason, it gets stuck.
 Nondeterministic behavior is determined by random factors, so a simple way of modeling nondeterminism is by modeling a process as a map from a randomly generated list of integers to a stream of actions.
@@ -137,7 +136,12 @@ The clock process can now be modeled by means of the following corecursion:
 > clock :: Process
 > clock (0:xs) = "tick"  : clock xs
 > clock (1:_ ) = "crack" : []
-  
+
+    tick
+   /    \
+   \    /
+    -->*--crack-->*
+
   *COR_10> start clock 1 1
   ["tick","crack"]
   *COR_10> start clock 1 2
@@ -150,8 +154,19 @@ The clock process can now be modeled by means of the following corecursion:
   ["tick","tick","tick","tick","crack"]
 
 Example 10.6
+Consider a very simple vending machine that sells mineral water and beer.
+Water costs one coin, beer two coins.
 
-> vending, vending1, vending2, vending3 :: Process
+       ----moneyback------
+      /                   \
+     --beer-------\        \
+    /              \        \
+    -water-         \        \
+   /       \         \        \
+  v         \         \        \
+  *--coin-->*--coin-->*--coin-->*
+
+> vending, vending1, vending2, vending3 :: Process -- [Int] -> [String]
 > vending  (0:xs) = "coin"      : vending1 xs
 > vending  (1:xs) =               vending  xs
 > vending1 (0:xs) = "coin"      : vending2 xs
@@ -181,5 +196,79 @@ A parking ticket dispenser works as follows.
 Example 10.8, 10.9, 10.10
 
 The key question about processes is the question of identity: how does one prove that two processes are the same?
+
+Before we end this brief introduction to processes we give a simple example of process interaction.
+
+Example 10.11
+
+How about a beer drinker who interacts with a vending machine?
+It turns out that we can model this very elegantly as follows.
+
+We let the user start with buying his/her first beer.
+Next, we feed the stream of actions produced by the vending machine as input to the user, and the stream of actions produced by the user as input to the vending machine, and they keep each other busy.
+This interaction can be modeled corecursively, as follows:
+
+> actions   = user [0,0,1] responses
+> responses = vending actions
+>
+> user acts ~(r:s:p:resps) = acts ++ user (proc [r,s,p]) resps
+> proc ["coin", "coin", "beer"] = [0,0,1]
+
+  *COR_10> take 8 actions 
+  [0,0,1,0,0,1,0,0]
+  *COR_10> take 8 responses 
+  ["coin","coin","beer","coin","coin","beer","coin","coin"]
+
+The user starts by inserting 2 coins and pressing the button, the machine responds with collecting the coins and issuing a can of beer, the user responds to this by inserting two more coins and pressing the button once more, and so on.
+
+One hairy detail: the pattern
+  ~(r:s:p:resps)
+is a so-called lazy pattern.
+Lazy pattern ALWAYS match, they are irrefutable.
+This allows the initial request to be submitted "before" the list (r:s:p:resps) comes into existence by the response from the vending machine.
+
+
+10.3 Proof by Approximation
+One of the proof methods that work for corecursive programs is proof by approximation.
+
+Domain
+For this, we have to extend each data type to a so-called domain with a partial ordering
+  \sqsubseteq
+(the approximation order).
+Every data type gets extended with an element
+  \bot.
+This is the lowest element in the approximation order.
+
+Let 
+  (D, \sqsubseteq)
+be a partially ordered set, and let
+  A \subset D.
+
+An element x \in A is the greatest element of A iff \forall a \in A, a \sqsubseteq x.
+Similarly, x is the least element of A iff \forall a \in A, x \sqsubseteq a.
+
+Note that there are D with A \subset D for which such least and greatest elements do not exist.
+
+Exercise 10.12
+
+An element x \in D is an upper bound of A iff \forall a \in A, a \sqsubseteq x.
+Use
+  A^u := {x \in D | \forall a \in A, a \sqsubseteq x}
+for the set of all upper bounds of A.
+Similarly, x \in D is a lower bound of A iff \forall a \in A, x \sqsubseteq a, and
+  A^l := {x \in D | \forall a \in A, x \sqsubseteq a}
+
+An element x \in D is the least upper bound(lub) of A iff x is the least element of A^u.
+The least upper bound is also called the supremum of A.
+
+E.g., consider (R, <=).
+Take
+  A := { n/(n+1) | n \in N} \subset R
+Then
+  A := {0,1/2, 2/3, 3/4, .. }
+and
+  A^u = {r \in R | r >= 1}
+The least upper bound of A is clearly 1.
+
 
 
